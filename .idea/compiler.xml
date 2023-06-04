@@ -2,15 +2,21 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="redis-service" />
+        <module name="api" />
         <module name="account-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="account-service" target="1.8" />
+      <module name="api" target="17" />
+      <module name="cache-service" target="17" />
+      <module name="redis-service" target="17" />
       <module name="wochat" target="19" />
       <module name="wochat-pom" target="17" />
     </bytecodeTargetLevel>
@@ -18,7 +24,10 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="account-service" options="-parameters" />
-      <module name="wochat-pom" options="-parameters" />
+      <module name="api" options="-parameters" />
+      <module name="cache-service" options="-parameters" />
+      <module name="redis-service" options="-parameters" />
+      <module name="wochat-pom" options="" />
     </option>
   </component>
 </project>

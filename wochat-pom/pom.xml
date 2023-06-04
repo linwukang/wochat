@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.12.RELEASE</version>
+        <version>2.6.13</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -18,26 +18,44 @@
 
     <modules>
         <module>../account-service</module>
+        <module>../api</module>
+        <module>../redis-service</module>
     </modules>
 
     <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 <!--        <spring-boot.version>2.6.13</spring-boot.version>-->
-        <spring-cloud-dependencies.version>Hoxton.SR8</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
+        <spring-boot-dependencies.version>2.6.13</spring-boot-dependencies.version>
         <mybatis.version>3.5.13</mybatis.version>
-        <spring-boot-dependencies.version>2.3.2.RELEASE</spring-boot-dependencies.version>
 
         <spring-cloud-commons-dependencies.version>4.0.2</spring-cloud-commons-dependencies.version>
         <mybatis-spring.version>3.0.1</mybatis-spring.version>
-        <mysql-connector-java.version>8.0.32</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.31</mysql-connector-java.version>
+        <spring-boot-starter-jdbc.version>2.6.13</spring-boot-starter-jdbc.version>
         <spring-boot-starter-web.version>2.6.13</spring-boot-starter-web.version>
         <aliyun-redis-spring-boot-starter.version>1.0.0</aliyun-redis-spring-boot-starter.version>
         <spring-cloud-starter-alibaba-nacos-config.version>2.2.6.RELEASE</spring-cloud-starter-alibaba-nacos-config.version>
         <spring-cloud-starter-alibaba-nacos-discovery.version>2.2.6.RELEASE</spring-cloud-starter-alibaba-nacos-discovery.version>
         <spring-cloud-alibaba-dependencies.version>2.2.5.RELEASE</spring-cloud-alibaba-dependencies.version>
         <spring-cloud-starter-openfeign.version>2.2.5.RELEASE</spring-cloud-starter-openfeign.version>
+        <druid.version>1.2.16</druid.version>
+        <spring-boot-starter-redis.version>1.4.7.RELEASE</spring-boot-starter-redis.version>
+        <spring-boot-starter-data-jpa.version>2.6.13</spring-boot-starter-data-jpa.version>
+        <spring-data-jpa.version>2.1.5.RELEASE</spring-data-jpa.version>
+        <junit-jupiter-api.version>5.7.2</junit-jupiter-api.version>
+        <junit-jupiter-engine.version>5.7.2</junit-jupiter-engine.version>
+        <junit.version>4.13.2</junit.version>
+        <spring-boot-starter-test.version>2.3.12.RELEASE</spring-boot-starter-test.version>
+        <junit-platform-commons.version>1.7.2</junit-platform-commons.version>
+        <hibernate-entitymanager.version>5.6.12.Final</hibernate-entitymanager.version>
+        <jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
+        <eclipselink.version>4.0.1</eclipselink.version>
+        <persistence-api.version>1.0.2</persistence-api.version>
     </properties>
     <dependencies>
 
@@ -66,10 +84,15 @@
                 <artifactId>spring-cloud-commons-dependencies</artifactId>
                 <version>${spring-cloud-commons-dependencies.version}</version>
             </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.alibaba.cloud</groupId>-->
+<!--                <artifactId>aliyun-redis-spring-boot-starter</artifactId>-->
+<!--                <version>${aliyun-redis-spring-boot-starter.version}</version>-->
+<!--            </dependency>-->
             <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>aliyun-redis-spring-boot-starter</artifactId>
-                <version>${aliyun-redis-spring-boot-starter.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-redis</artifactId>
+                <version>${spring-boot-starter-redis.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
@@ -106,6 +129,17 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-java.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jdbc</artifactId>
+                <version>${spring-boot-starter-jdbc.version}</version>
+            </dependency>
+            <!-- druid 数据库连接池 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
             <!-- openfeign负载均衡依赖 -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -117,6 +151,72 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${spring-boot-starter-web.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>${spring-boot-starter-data-jpa.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring-data-jpa.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate-entitymanager.version}</version>
+            </dependency>
+
+            <!-- 测试依赖 -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit-jupiter-api.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit-jupiter-engine.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-commons</artifactId>
+                <version>${junit-platform-commons.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot-starter-test.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>jakarta.persistence-api</artifactId>
+                <version>${jakarta.persistence-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <version>${persistence-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>eclipselink</artifactId>
+                <version>${eclipselink.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

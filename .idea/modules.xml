@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/account-service/account-service.iml" filepath="$PROJECT_DIR$/account-service/account-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/api.iml" filepath="$PROJECT_DIR$/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/redis-service/redis-service.iml" filepath="$PROJECT_DIR$/redis-service/redis-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/wochat-pom/wochat-pom.iml" filepath="$PROJECT_DIR$/wochat-pom/wochat-pom.iml" />
     </modules>
   </component>

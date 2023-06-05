@@ -56,6 +56,7 @@
         <jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
         <eclipselink.version>4.0.1</eclipselink.version>
         <persistence-api.version>1.0.2</persistence-api.version>
+        <spring-cloud-starter-ribbon.version>1.4.7.RELEASE</spring-cloud-starter-ribbon.version>
     </properties>
     <dependencies>
 
@@ -110,6 +111,12 @@
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
                 <version>${spring-cloud-starter-alibaba-nacos-discovery.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.cloud</groupId>
+                        <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- Mybatis 核心库 -->
             <dependency>
@@ -217,6 +224,11 @@
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>eclipselink</artifactId>
                 <version>${eclipselink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-ribbon</artifactId>
+                <version>${spring-cloud-starter-ribbon.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

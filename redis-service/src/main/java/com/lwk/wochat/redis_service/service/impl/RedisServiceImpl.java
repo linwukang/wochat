@@ -1,33 +1,33 @@
-package com.lwk.wochat.redisservice.service.impl;
+package com.lwk.wochat.redis_service.service.impl;
 
-import com.lwk.wochat.redisservice.service.RedisService;
-import org.springframework.cache.annotation.Cacheable;
+import com.lwk.wochat.redis_service.service.RedisService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class RedisServiceImpl implements RedisService {
 
     @Resource(name = "redisTemplate")
-    private RedisTemplate<String, Serializable> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public Optional<Serializable> getByKey(String key) {
+    public Optional<Object> getByKey(String key) {
         return Optional.ofNullable(redisTemplate.opsForValue().get(key));
     }
 
     @Override
-    public void setByKey(String key, Serializable value) {
+    public void setByKey(String key, Object value) {
         redisTemplate.opsForValue().set(key, value);
     }
 
     @Override
-    public void setByKey(String key, Serializable value, Long ttl) {
-        redisTemplate.opsForValue().set(key, value, ttl);
+    public void setByKey(String key, Object value, Long ttl) {
+        redisTemplate.opsForValue().set(key, value);
+        redisTemplate.expire(key, ttl, TimeUnit.MILLISECONDS);
     }
 
     @Override

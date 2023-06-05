@@ -11,9 +11,9 @@ import java.util.Optional;
  * @param message 消息
  * @param <T> 数据类型，必须实现可序列化接口 {@link Serializable}
  */
-public record Result<T extends Serializable>(Optional<T> data, Code code, Optional<String> message) {
+public record Result<T>(Optional<T> data, Code code, Optional<String> message) {
 
-    public static <T extends Serializable> Result<T> error() {
+    public static <T> Result<T> error() {
         return new Result<>(
                 Optional.empty(),
                 Code.ERROR,
@@ -21,7 +21,7 @@ public record Result<T extends Serializable>(Optional<T> data, Code code, Option
         );
     }
 
-    public static <T extends Serializable> Result<T> getSucceed(T data) {
+    public static <T> Result<T> getSucceed(T data) {
         if (data == null) {
             throw new NullPointerException("data is null");
         }
@@ -29,11 +29,11 @@ public record Result<T extends Serializable>(Optional<T> data, Code code, Option
         return new Result<>(
                 Optional.of(data),
                 Code.GET_SUCCEED,
-                Optional.of("服务器繁忙，请稍后重试")
+                Optional.empty()
         );
     }
 
-    public static <T extends Serializable> Result<T> getFailed() {
+    public static <T> Result<T> getFailed() {
         return new Result<>(
                 Optional.empty(),
                 Code.GET_FAILED,
@@ -42,7 +42,7 @@ public record Result<T extends Serializable>(Optional<T> data, Code code, Option
     }
 
 
-    public static <T extends Serializable> Result<T> saveSucceed() {
+    public static <T> Result<T> saveSucceed() {
         return new Result<>(
                 Optional.empty(),
                 Code.SAVA_SUCCEED,
@@ -50,7 +50,7 @@ public record Result<T extends Serializable>(Optional<T> data, Code code, Option
         );
     }
 
-    public static <T extends Serializable> Result<T> saveFailed() {
+    public static <T> Result<T> saveFailed() {
         return new Result<>(
                 Optional.empty(),
                 Code.SAVA_FAILED,
@@ -58,7 +58,7 @@ public record Result<T extends Serializable>(Optional<T> data, Code code, Option
         );
     }
 
-    public static Result<Serializable> removeSucceed() {
+    public static <T> Result<T> removeSucceed() {
         return new Result<>(
                 Optional.empty(),
                 Code.REMOVE_SUCCEED,
@@ -66,7 +66,7 @@ public record Result<T extends Serializable>(Optional<T> data, Code code, Option
         );
     }
 
-    public static Result<Serializable> removeFailed() {
+    public static <T> Result<T> removeFailed() {
         return new Result<>(
                 Optional.empty(),
                 Code.REMOVE_FAILED,

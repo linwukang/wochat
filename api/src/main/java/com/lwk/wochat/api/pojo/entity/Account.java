@@ -1,13 +1,18 @@
 package com.lwk.wochat.api.pojo.entity;
 
 import javax.persistence.*;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 
 @Data
+@EqualsAndHashCode
+@AllArgsConstructor
 @Entity
 @Table(name = "user_account")
 @EntityListeners(AuditingEntityListener.class)

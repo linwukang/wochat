@@ -1,4 +1,4 @@
-package com.lwk.wochat.redisservice;
+package com.lwk.wochat.redis_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

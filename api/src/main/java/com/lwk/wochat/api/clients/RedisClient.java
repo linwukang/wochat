@@ -1,22 +1,26 @@
 package com.lwk.wochat.api.clients;
 
 import com.lwk.wochat.api.pojo.http.response.Result;
+import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Serializable;
-
-@FeignClient("redis-service")
+@FeignClient(value = "redis-service", path = "redis")
 public interface RedisClient {
     @GetMapping("/{key}")
-    Result<Serializable> get(@PathVariable String key);
+    Result<Object> get(@PathVariable String key);
+
+    @PostMapping("/{key}")
+    Result<Object> save(
+            @PathVariable String key,
+            @RequestBody Object value);
 
     @PostMapping("/{key}/{ttl}")
-    Result<Serializable> save(
+    Result<Object> save(
             @PathVariable String key,
-            @PathVariable(required = false) Long ttl,
-            @RequestBody(required = false) Serializable value);
+            @RequestBody Object value,
+            @PathVariable Long ttl);
 
     @DeleteMapping("/{key}")
-    Result<Serializable> remove(@PathVariable String key);
+    Result<Object> remove(@PathVariable String key);
 }

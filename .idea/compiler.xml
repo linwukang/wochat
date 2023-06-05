@@ -7,13 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="account-service" />
         <module name="redis-service" />
         <module name="api" />
-        <module name="account-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="account-service" target="1.8" />
+      <module name="account-service" target="17" />
       <module name="api" target="17" />
       <module name="cache-service" target="17" />
       <module name="redis-service" target="17" />
@@ -27,7 +27,7 @@
       <module name="api" options="-parameters" />
       <module name="cache-service" options="-parameters" />
       <module name="redis-service" options="-parameters" />
-      <module name="wochat-pom" options="" />
+      <module name="wochat-pom" options="-parameters" />
     </option>
   </component>
 </project>

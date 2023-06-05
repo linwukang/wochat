@@ -1,26 +1,26 @@
 package com.lwk.wochat.api;
 
-import com.lwk.wochat.api.configuration.DataSourceConfiguration;
-import com.lwk.wochat.api.configuration.JpaConfig;
-import com.lwk.wochat.api.configuration.SpringCloudConfiguration;
+
+import com.lwk.wochat.api.clients.RedisClient;
+import com.lwk.wochat.api.clients.SbSpring;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableJpaAuditing
-@Import({
-        DataSourceConfiguration.class,
-        JpaConfig.class,
-        SpringCloudConfiguration.class
-})
 public class ApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ApiApplication.class, args);
+        ConfigurableApplicationContext ac = SpringApplication.run(ApiApplication.class, args);
+        SbSpring sbSpring = ac.getBean(SbSpring.class);
+        System.out.println("sbSpring: " + sbSpring);
+        RedisClient redisClient = ac.getBean(RedisClient.class);
+        System.out.println("redisClient: " + redisClient);
     }
 
 }

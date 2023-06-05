@@ -1,4 +1,4 @@
-package com.lwk.wochat.redisservice.configuration;
+package com.lwk.wochat.redis_service.configuration;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;

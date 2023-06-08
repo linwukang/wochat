@@ -13,7 +13,9 @@ public interface RedisPlusService<T> {
 
     /**
      * 通过 key 获取值
+     * 自动将值反序列化返回
      * @param key 键
+     * @param type 返回类型
      * @return 值
      */
     Optional<T> getByKey(String key, Class<T> type);

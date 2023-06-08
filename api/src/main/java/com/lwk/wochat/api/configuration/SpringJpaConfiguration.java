@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.lwk.wochat.api.dao.repository")
-public class JpaConfig {
+public class SpringJpaConfiguration {
     @Resource(name = "dataSource")
     private DataSource dataSource;
 

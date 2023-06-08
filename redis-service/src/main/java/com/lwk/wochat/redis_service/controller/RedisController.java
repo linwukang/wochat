@@ -2,42 +2,37 @@ package com.lwk.wochat.redis_service.controller;
 
 import com.lwk.wochat.api.pojo.http.response.Result;
 import com.lwk.wochat.redis_service.service.RedisService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
 
 @RestController
 @RequestMapping("redis")
 public class RedisController {
+    Logger logger = LoggerFactory.getLogger(RedisController.class);
+
     @Resource(type = RedisService.class)
-    private RedisService redisService;
+    private RedisService<String> redisService;
 
     @GetMapping("/{key}")
-    public Result<Object> get(@PathVariable String key) {
-        return redisService
-                .getByKey(key)
+    public Result<String> get(@PathVariable String key) {
+        Result<String> stringResult = redisService
+                .getByKey(key, String.class)
                 .map(Result::getSucceed)
                 .orElse(Result.getFailed());
-    }
 
-    @PostMapping("/{key}")
-    public Result<Object> save(
-            @PathVariable String key,
-            @RequestBody Object value) {
+//        logger.info("redis controller get: key=" + key + ", result=" + stringResult);
 
-            redisService.setByKey(key, value);
-        return Result.saveSucceed();
+        return stringResult;
     }
 
     @PostMapping("/{key}/{ttl}")
-    public Result<Object> save(
-            @PathVariable String key,
-            @RequestBody Object value,
-            @PathVariable Long ttl) {
+    public Result<String> save(@PathVariable String key, @RequestBody String value, @PathVariable Long ttl) {
 
         if (ttl == null) {
-            return Result.saveFailed();
+            return save(key, value);
         }
         else {
             redisService.setByKey(key, value, ttl);
@@ -45,8 +40,14 @@ public class RedisController {
         }
     }
 
+    @PostMapping("/{key}")
+    public Result<String> save(@PathVariable String key, @RequestBody String  value) {
+        redisService.setByKey(key, value);
+        return Result.saveSucceed();
+    }
+
     @DeleteMapping("/{key}")
-    public Result<Object> remove(@PathVariable String key) {
+    public Result<String> remove(@PathVariable String key) {
         return redisService.removeKey(key)
                 ? Result.removeSucceed()
                 : Result.removeFailed();

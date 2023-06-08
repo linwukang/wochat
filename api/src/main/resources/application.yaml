@@ -1,6 +1,10 @@
 spring:
   application:
     name: api
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/wochat_account?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
@@ -14,7 +18,8 @@ spring:
     show-sql: true        # 日志中显示sql语句
     open-in-view: false
     entityClassPackage: com.lwk.wochat.api.pojo.entity
-
+  cache:
+    type: redis
 feign:
   httpclient:
     enabled: true

@@ -1,17 +1,80 @@
 package com.lwk.wochat.api.pojo.http.response;
 
-import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
  * 响应结果
  * 用于统一响应数据的内容
- * @param data 数据内容
- * @param code 状态码
- * @param message 消息
- * @param <T> 数据类型，必须实现可序列化接口 {@link Serializable}
  */
-public record Result<T>(Optional<T> data, Code code, Optional<String> message) {
+public final class Result<T> {
+    private Optional<T> data;
+    private Code code;
+    private Optional<String> message;
+
+    /**
+     */
+    public Result(Optional<T> data, Code code, Optional<String> message) {
+        this.data = data;
+        this.code = code;
+        this.message = message;
+    }
+
+    public Result() {
+        this(Optional.empty(), null, Optional.empty());
+    }
+
+    public Optional<T> getData() {
+        return data;
+    }
+
+    public Code getCode() {
+        return code;
+    }
+
+    public Optional<String> getMessage() {
+        return message;
+    }
+
+    public void setData(T data) {
+        this.data = Optional.ofNullable(data);
+    }
+
+    public void setCode(Code code) {
+        this.code = code;
+    }
+
+    public void setMessage(String message) {
+        this.message = Optional.ofNullable(message);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (Result) obj;
+        return Objects.equals(this.data, that.data) &&
+                Objects.equals(this.code, that.code) &&
+                Objects.equals(this.message, that.message);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(data, code, message);
+    }
+
+    @Override
+    public String toString() {
+        return "Result[" +
+                "data=" + data + ", " +
+                "code=" + code + ", " +
+                "message=" + message + ']';
+    }
+
+
+    /////////////////////////////////
+    ///         静态方法           ///
+    /////////////////////////////////
 
     public static <T> Result<T> error() {
         return new Result<>(
@@ -73,4 +136,5 @@ public record Result<T>(Optional<T> data, Code code, Optional<String> message) {
                 Optional.of("删除数据失败")
         );
     }
+
 }

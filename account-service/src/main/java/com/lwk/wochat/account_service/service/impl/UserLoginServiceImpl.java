@@ -5,12 +5,13 @@ import com.lwk.wochat.account_service.service.UserLoginService;
 import com.lwk.wochat.api.dao.repository.AccountRepository;
 import com.lwk.wochat.api.pojo.entity.Account;
 import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Optional;
 import java.util.UUID;
 
-
+@Service
 public class UserLoginServiceImpl implements UserLoginService {
     @Resource
     private AccountRepository accountRepository;
@@ -36,7 +37,7 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Override
     public Boolean logout(Account account, String token) {
         return tokenService
-                .tryGetToken(account)
+                .tryGetToken(account.getAccount())
                 .map(tk -> {
                     if (tk.equals(token)) {
                         tokenService.invalidateToken(tk);
@@ -52,7 +53,7 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Override
     public Boolean logged(Account account) {
         return tokenService
-                .tryGetToken(account)
+                .tryGetToken(account.getAccount())
                 .isPresent();
     }
 }

@@ -1,6 +1,8 @@
-package com.lwk.wochat.api.data.cache;
+package com.lwk.wochat.api.data._cache.factory;
 
 import com.lwk.wochat.api.clients.RedisClient;
+import com.lwk.wochat.api.data._cache.Cache;
+import com.lwk.wochat.api.data._cache.RedisCache;
 import com.lwk.wochat.api.data.crud.Crud;
 import org.springframework.stereotype.Component;
 

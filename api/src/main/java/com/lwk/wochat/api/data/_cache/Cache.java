@@ -1,4 +1,4 @@
-package com.lwk.wochat.api.data.cache;
+package com.lwk.wochat.api.data._cache;
 
 import com.lwk.wochat.api.data.crud.Crud;
 

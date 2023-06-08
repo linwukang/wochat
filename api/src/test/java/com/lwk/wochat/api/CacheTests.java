@@ -1,19 +1,15 @@
 package com.lwk.wochat.api;
 
 import com.lwk.wochat.api.dao.repository.AccountRepository;
-import com.lwk.wochat.api.data.cache.Cache;
-import com.lwk.wochat.api.data.cache.CacheFactory;
-import com.lwk.wochat.api.data.cache.RedisCache;
-import com.lwk.wochat.api.data.cache.RedisCacheFactory;
+import com.lwk.wochat.api.data._cache.RedisCache;
+import com.lwk.wochat.api.data._cache.factory.RedisCacheFactory;
 import com.lwk.wochat.api.data.crud.Crud;
 import com.lwk.wochat.api.pojo.entity.Account;
-import com.lwk.wochat.api.utils.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;

@@ -1,10 +1,8 @@
-package com.lwk.wochat.api.data.cache;
+package com.lwk.wochat.api.data._cache;
 
 import com.lwk.wochat.api.clients.RedisClient;
 import com.lwk.wochat.api.data.crud.Crud;
 import com.lwk.wochat.api.exception.KeyNotFoundException;
-import com.lwk.wochat.api.exception.SaveDataFailedException;
-import com.lwk.wochat.api.pojo.http.response.Code;
 import com.lwk.wochat.api.pojo.http.response.Result;
 import com.lwk.wochat.api.utils.BeanUtil;
 import org.slf4j.Logger;

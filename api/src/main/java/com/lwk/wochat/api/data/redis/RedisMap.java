@@ -1,15 +1,18 @@
 package com.lwk.wochat.api.data.redis;
 
-import org.springframework.cache.Cache;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class RedisMap<V> implements Map<String, V> {
+public class RedisMap<V> implements IRedisMap<String, V> {
     private final RedisTemplate<String, V> redisTemplate;
 
     private final String keyPrefix;
+
+    private final String markRemovedPrefix = "@__markRemoved__:";
 
     public RedisMap(RedisTemplate<String, V> redisTemplate, String keyPrefix) {
         this.redisTemplate = redisTemplate;
@@ -91,14 +94,20 @@ public class RedisMap<V> implements Map<String, V> {
     public void clear() {
         Optional
                 .ofNullable(redisTemplate.keys(keyPrefix + "*"))
-                .ifPresent(keys -> redisTemplate.delete(keys));
+                .ifPresent(keys -> {
+                    Long deleteCount = redisTemplate.delete(keys);
+                });
     }
 
     @Override
     public Set<String> keySet() {
         return Optional
                 .ofNullable(redisTemplate.keys(keyPrefix + "*"))
-                .map(fullKeys -> fullKeys.stream().map(fullKey -> fullKey.replace(keyPrefix, "")))
+                .map(fullKeys ->
+                        fullKeys
+                                .stream()
+//                                .filter(fullKey -> fullKey.startsWith(keyPrefix))
+                                .map(fullKey -> fullKey.substring(keyPrefix.length())))
                 .map(keys -> keys.collect(Collectors.toSet()))
                 .orElse(Set.of());
     }
@@ -120,9 +129,34 @@ public class RedisMap<V> implements Map<String, V> {
                         keys
                                 .stream()
                                 .map(key ->
-                                        new AbstractMap.SimpleEntry<>(key, redisTemplate.opsForValue().get(key)))
+                                        new AbstractMap.SimpleEntry<>
+                                                (key, redisTemplate.opsForValue().get(key)))
                                 .map(entry -> (Entry<String, V>) entry))
                 .map(s -> s.collect(Collectors.toSet()))
                 .orElse(Collections.emptySet());
+    }
+
+    @Override
+    public V markRemoved(String key) {
+        V value = remove(key);
+        put(keyPrefix + markRemovedPrefix + key, value);
+        return value;
+    }
+
+    @Override
+    public boolean isMarkRemoved(String key) {
+        return containsKey(keyPrefix + markRemovedPrefix + key);
+    }
+
+    @Override
+    public V putAndExpire(String key, V value, Duration timeout) {
+        redisTemplate.opsForValue().set(keyPrefix + key, value, timeout);
+        expire(keyPrefix + key, timeout);
+        return value;
+    }
+
+    @Override
+    public Boolean expire(String key, Duration timeout) {
+        return redisTemplate.expire(keyPrefix + key, timeout);
     }
 }

@@ -45,15 +45,17 @@
         <spring-cloud-starter-openfeign.version>2.2.5.RELEASE</spring-cloud-starter-openfeign.version>
         <druid.version>1.2.16</druid.version>
         <spring-boot-starter-redis.version>1.4.7.RELEASE</spring-boot-starter-redis.version>
-        <spring-boot-starter-data-jpa.version>2.6.13</spring-boot-starter-data-jpa.version>
-        <spring-data-jpa.version>2.1.5.RELEASE</spring-data-jpa.version>
+        <spring-boot-starter-data-jpa.version>2.3.9.RELEASE</spring-boot-starter-data-jpa.version>
+        <spring-data-jpa.version>2.3.9.RELEASE</spring-data-jpa.version>
+        <spring-data-commons.version>2.3.9.RELEASE</spring-data-commons.version>
+        <spring-data-core.version>2.6.13</spring-data-core.version>
         <junit-jupiter-api.version>5.7.2</junit-jupiter-api.version>
         <junit-jupiter-engine.version>5.7.2</junit-jupiter-engine.version>
         <junit.version>4.13.2</junit.version>
         <spring-boot-starter-test.version>2.3.12.RELEASE</spring-boot-starter-test.version>
         <junit-platform-commons.version>1.7.2</junit-platform-commons.version>
         <hibernate-entitymanager.version>5.6.12.Final</hibernate-entitymanager.version>
-        <jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
+        <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
         <eclipselink.version>4.0.1</eclipselink.version>
         <spring-cloud-starter-ribbon.version>1.4.7.RELEASE</spring-cloud-starter-ribbon.version>
         <persistence-api.version>1.0.2</persistence-api.version>
@@ -172,6 +174,22 @@
                 <artifactId>spring-data-jpa</artifactId>
                 <version>${spring-data-jpa.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <version>${spring-data-commons.version}</version>
+<!--                <exclusions>-->
+<!--                    <exclusion>-->
+<!--                        <groupId>org.springframework.boot</groupId>-->
+<!--                        <artifactId>spring-boot-autoconfigure</artifactId>-->
+<!--                    </exclusion>-->
+<!--                    <exclusion>-->
+<!--                        <groupId>org.springframework.boot</groupId>-->
+<!--                        <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+<!--                    </exclusion>-->
+<!--                </exclusions>-->
+            </dependency>
+
 
             <dependency>
                 <groupId>org.hibernate</groupId>

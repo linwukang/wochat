@@ -52,7 +52,7 @@ public class CacheTests {
 
             @Override
             public void update(String key, Account entity) {
-                entity.setAccount(key);
+                entity.setUsername(key);
                 accountRepository.save(entity);
             }
         };
@@ -80,7 +80,7 @@ public class CacheTests {
 
         Date start2 = new Date();
         for (int i = 0; i < times; i++) {
-            accountRepository.getOne(7L);
+            accountRepository.findById(7L);
         }
         Date end2 = new Date();
 

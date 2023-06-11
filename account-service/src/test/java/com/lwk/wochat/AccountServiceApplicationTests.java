@@ -2,6 +2,7 @@ package com.lwk.wochat;
 
 import com.lwk.wochat.account_service.AccountServiceApplication;
 import com.lwk.wochat.account_service.service.TokenService;
+import com.lwk.wochat.account_service.service.UserLoginService;
 import com.lwk.wochat.api.clients.RedisClient;
 import com.lwk.wochat.api.pojo.entity.Account;
 import com.lwk.wochat.api.pojo.http.response.Code;
@@ -24,7 +25,7 @@ class AccountServiceApplicationTests {
     /**
      * 测试 {@link RedisClient} 的基本功能
      */
-    @Test
+//    @Test
     void testRedisClient() {
         Account account1 = new Account(1L, "111", "aaa", null);
         Account account2 = new Account(2L, "222", "bbb", null);
@@ -70,22 +71,82 @@ class AccountServiceApplicationTests {
 
     @Resource(type = TokenService.class)
     TokenService tokenService;
-
+    /**
+     * 测试 {@link TokenService} 的基本功能
+     */
     @Test
     void testTokenService() {
-        System.out.println("=========================================testTokenService=========================================");
         Account account1 = new Account(1L, "111", "aaa", new Date());
         String token = tokenService.login(account1);
-        System.out.println("token: " + token);
 
         Optional<String> accountOptional = tokenService.tryGetAccount(token);
-        accountOptional.ifPresent(System.out::println);
+        Assertions.assertTrue(accountOptional.isPresent());
+        Assertions.assertEquals(account1.getUsername(), accountOptional.get());
 
-        Optional<String> tokenOptional = tokenService.tryGetToken(account1.getAccount());
-        tokenOptional.ifPresent(System.out::println);
+        Optional<String> tokenOptional = tokenService.tryGetToken(account1.getUsername());
+        Assertions.assertTrue(tokenOptional.isPresent());
+        Assertions.assertEquals(token, tokenOptional.get());
 
         tokenService.invalidateToken(token);
-        System.out.println(tokenService.tryGetAccount(token));
-        System.out.println(tokenService.tryGetToken(account1.getAccount()));
+
+        Assertions.assertFalse(tokenService.tryGetAccount(token).isPresent());
+        Assertions.assertFalse(tokenService.tryGetToken(account1.getUsername()).isPresent());
+    }
+
+
+    @Resource(type = UserLoginService.class)
+    UserLoginService userLoginService;
+    /**
+     * 测试 {@link UserLoginService} 的基本功能
+     */
+    @Test
+    void testUserLoginService() {
+        /**
+         * 账号       密码
+         * test0001, aaaaaa
+         * test0002, bbbbbb
+         * test0003, cccccc
+         * test0004, dddddd
+         **/
+
+        Account account01 = Account.builder().username("test0001").password("aaaaaa").build();
+        Account account02 = Account.builder().username("test0002").password("bbbbbb").build();
+        Account account03 = Account.builder().username("test0003").password("cccccc").build();
+        Account account04 = Account.builder().username("test0004").password("dddddd").build();
+
+        Assertions.assertFalse(userLoginService.logged(account01));
+        Assertions.assertFalse(userLoginService.logged(account02));
+        Assertions.assertFalse(userLoginService.logged(account03));
+        Assertions.assertFalse(userLoginService.logged(account04));
+
+        Optional<String> tokOptional01 = userLoginService.tryLogin(account01);
+        Optional<String> tokOptional02 = userLoginService.tryLogin(account02);
+        Optional<String> tokOptional03 = userLoginService.tryLogin(account03);
+        Optional<String> tokOptional04 = userLoginService.tryLogin(account04);
+
+        Assertions.assertTrue(tokOptional01.isPresent());
+        Assertions.assertTrue(tokOptional02.isPresent());
+        Assertions.assertTrue(tokOptional03.isPresent());
+        Assertions.assertTrue(tokOptional04.isPresent());
+
+        String tok01 = tokOptional01.get();
+        String tok02 = tokOptional02.get();
+        String tok03 = tokOptional03.get();
+        String tok04 = tokOptional04.get();
+
+        Assertions.assertTrue(userLoginService.logged(account01));
+        Assertions.assertTrue(userLoginService.logged(account02));
+        Assertions.assertTrue(userLoginService.logged(account03));
+        Assertions.assertTrue(userLoginService.logged(account04));
+
+        Assertions.assertTrue(userLoginService.logout(account01, tok01));
+        Assertions.assertTrue(userLoginService.logout(account02, tok02));
+        Assertions.assertTrue(userLoginService.logout(account03, tok03));
+        Assertions.assertTrue(userLoginService.logout(account04, tok04));
+
+        Assertions.assertFalse(userLoginService.logged(account01));
+        Assertions.assertFalse(userLoginService.logged(account02));
+        Assertions.assertFalse(userLoginService.logged(account03));
+        Assertions.assertFalse(userLoginService.logged(account04));
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class RedisMap<V> implements IRedisMap<String, V> {
@@ -149,14 +150,44 @@ public class RedisMap<V> implements IRedisMap<String, V> {
     }
 
     @Override
-    public V putAndExpire(String key, V value, Duration timeout) {
-        redisTemplate.opsForValue().set(keyPrefix + key, value, timeout);
-        expire(keyPrefix + key, timeout);
+    public V putWithExpire(String key, V value, Duration ttl) {
+        redisTemplate.opsForValue().set(keyPrefix + key, value);
+        expire(keyPrefix + key, ttl);
         return value;
     }
 
     @Override
-    public Boolean expire(String key, Duration timeout) {
-        return redisTemplate.expire(keyPrefix + key, timeout);
+    public V putWithExpire(String key, V value, Supplier<Duration> ttl) {
+        redisTemplate.opsForValue().set(keyPrefix + key, value);
+        expire(keyPrefix + key, ttl);
+        return value;
+    }
+
+    @Override
+    public void putAllWithExpire(Map<? extends String, ? extends V> m, Duration ttl) {
+        m.forEach(
+                (key, value) -> {
+                    redisTemplate.opsForValue().set(keyPrefix + key, value);
+                    redisTemplate.expire(keyPrefix + key, ttl);
+                });
+    }
+
+    @Override
+    public void putAllWithExpire(Map<? extends String, ? extends V> m, Supplier<Duration> ttl) {
+        m.forEach(
+                (key, value) -> {
+                    redisTemplate.opsForValue().set(keyPrefix + key, value);
+                    redisTemplate.expire(keyPrefix + key, ttl.get());
+                });
+    }
+
+    @Override
+    public Boolean expire(String key, Duration ttl) {
+        return redisTemplate.expire(keyPrefix + key, ttl);
+    }
+
+    @Override
+    public Boolean expire(String key, Supplier<Duration> ttl) {
+        return redisTemplate.expire(keyPrefix + key, ttl.get());
     }
 }

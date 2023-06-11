@@ -4,9 +4,14 @@ import com.lwk.wochat.api.pojo.entity.Account;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.Future;
+import java.time.Duration;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * Token 服务
+ * 通过 token 实现账号登录功能
+ */
 @Transactional
 public interface TokenService {
     /**
@@ -47,9 +52,9 @@ public interface TokenService {
     void invalidateToken(String token);
 
     /**
-     * 延长 token 的有效时间
+     * 设置 token 的有效时间
      * @param token token
-     * @param validityDate 新的有效时间，只能是未来的某个时间点
+     * @param ttl 过期时间
      */
-    void extendTokenValidityTo(String token, @Future Date validityDate);
+    void extendTokenValidityTo(String token, @Future Duration ttl);
 }

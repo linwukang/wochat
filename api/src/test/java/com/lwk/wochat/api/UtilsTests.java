@@ -25,7 +25,7 @@ class UtilsTests {
         Account account1 = new Account(0L, "123", "aaa", new Date());
         Map<String, Object> accountMap1 = new HashMap<>();
         accountMap1.put("id", account1.getId());
-        accountMap1.put("account", account1.getAccount());
+        accountMap1.put("account", account1.getUsername());
         accountMap1.put("password", account1.getPassword());
         accountMap1.put("createTime", account1.getCreateTime());
 
@@ -35,7 +35,7 @@ class UtilsTests {
         Account account2 = new Account(null, "123", "aaa", null);
         Map<String, Object> accountMap2 = new HashMap<>();
         accountMap2.put("id", account2.getId());
-        accountMap2.put("account", account2.getAccount());
+        accountMap2.put("account", account2.getUsername());
         accountMap2.put("password", account2.getPassword());
         accountMap2.put("createTime", account2.getCreateTime());
 
@@ -44,7 +44,7 @@ class UtilsTests {
         Account account3 = new Account(null, "123", "aaa", null);
         Map<String, Object> accountMap3 = new HashMap<>();
         accountMap3.put("id", account3.getId());
-        accountMap3.put("account", account3.getAccount());
+        accountMap3.put("account", account3.getUsername());
         accountMap3.put("password", account3.getPassword());
         accountMap3.put("createTime", account3.getCreateTime());
         accountMap3.put("testKey01", "testValue01");

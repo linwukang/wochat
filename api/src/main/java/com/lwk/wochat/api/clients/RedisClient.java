@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 来自 {@link com.lwk.wochat.redis_service.controller.RedisController}
  */
+@Deprecated
 @FeignClient(value = "redis-service", path = "redis")
 public interface RedisClient {
     @GetMapping("/{key}")

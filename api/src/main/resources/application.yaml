@@ -1,10 +1,10 @@
 spring:
   application:
     name: api
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 192.168.192.129:8848
   redis:
     database: 0
     host: localhost
@@ -31,6 +31,7 @@ spring:
     show-sql: true        # 日志中显示sql语句
     open-in-view: false
     entityClassPackage: com.lwk.wochat.api.pojo.entity
+
   cache:
     type: redis
 feign:

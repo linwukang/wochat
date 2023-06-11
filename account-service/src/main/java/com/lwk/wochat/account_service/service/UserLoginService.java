@@ -1,11 +1,14 @@
 package com.lwk.wochat.account_service.service;
 
 import com.lwk.wochat.api.pojo.entity.Account;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+/**
+ * 用户登录服务
+ * 基于 token 实现
+ */
 @Transactional
 public interface UserLoginService {
     /**
@@ -23,14 +26,33 @@ public interface UserLoginService {
      *      - true: 登出成功
      *      - false: 登出失败
      */
-    Boolean logout(Account account, String token);
+    boolean logout(Account account, String token);
 
     /**
      * 检测账号是否已登录
+     *
      * @param account Account 对象，包含账号和密码
-     * @return
-     *      - true: 已登录
-     *      - false: 未登录
+     * @return - true: 已登录
+     * - false: 未登录
      */
-    Boolean logged(Account account);
+    boolean logged(Account account);
+
+    /**
+     * 检测账号是否存在
+     * @param account 账号
+     * @return
+     * - true: 存在
+     * - false: 不存在
+     */
+    boolean accountExisted(Account account);
+
+    /**
+     * 校验密码是否正确
+     * @param account 账号
+     * @param password 密码
+     * @return
+     * - true: 账号密码正确
+     * - false: 账号或密码错误
+     */
+    boolean verifyPassword(Account account);
 }

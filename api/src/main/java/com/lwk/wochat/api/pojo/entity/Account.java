@@ -2,16 +2,14 @@ package com.lwk.wochat.api.pojo.entity;
 
 import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 
 @Data
+@Builder
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,10 +22,10 @@ public class Account {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "u_account")
-    private String account;
+    @Column(name = "username")
+    private String username;
 
-    @Column(name = "u_password")
+    @Column(name = "password")
     private String password;
 
     @Column(name = "create_time")

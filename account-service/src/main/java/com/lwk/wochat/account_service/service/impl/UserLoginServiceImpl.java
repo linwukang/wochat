@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserLoginServiceImpl implements UserLoginService {
@@ -21,23 +20,21 @@ public class UserLoginServiceImpl implements UserLoginService {
 
     @Override
     public Optional<String> tryLogin(Account account) {
-        long count = accountRepository.count(Example.of(account));
-        if (count == 1) {
+        if (verifyPassword(account)) {
             // 登录成功
-            String token = UUID.randomUUID().toString();
+            String token = tokenService.login(account);
             return Optional.of(token);
         }
-        else
-        {
+        else {
             // 登录失败
             return Optional.empty();
         }
     }
 
     @Override
-    public Boolean logout(Account account, String token) {
+    public boolean logout(Account account, String token) {
         return tokenService
-                .tryGetToken(account.getAccount())
+                .tryGetToken(account.getUsername())
                 .map(tk -> {
                     if (tk.equals(token)) {
                         tokenService.invalidateToken(tk);
@@ -51,9 +48,19 @@ public class UserLoginServiceImpl implements UserLoginService {
     }
 
     @Override
-    public Boolean logged(Account account) {
+    public boolean logged(Account account) {
         return tokenService
-                .tryGetToken(account.getAccount())
+                .tryGetToken(account.getUsername())
                 .isPresent();
+    }
+
+    @Override
+    public boolean accountExisted(Account account) {
+        return accountRepository.count(Example.of(account)) == 1;
+    }
+
+    @Override
+    public boolean verifyPassword(Account account) {
+        return accountRepository.count(Example.of(account)) == 1;
     }
 }

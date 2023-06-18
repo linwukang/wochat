@@ -10,7 +10,6 @@
         <option value="$PROJECT_DIR$/account-service/pom.xml" />
         <option value="$PROJECT_DIR$/wochat-pom/pom.xml" />
         <option value="$PROJECT_DIR$/api/pom.xml" />
-        <option value="$PROJECT_DIR$/redis-service/pom.xml" />
       </list>
     </option>
   </component>

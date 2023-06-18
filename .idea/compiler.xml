@@ -8,7 +8,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="account-service" />
-        <module name="redis-service" />
         <module name="api" />
       </profile>
     </annotationProcessing>

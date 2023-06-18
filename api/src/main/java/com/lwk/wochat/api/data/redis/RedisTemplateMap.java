@@ -1,5 +1,9 @@
 package com.lwk.wochat.api.data.redis;
 
+import com.lwk.wochat.api.data.redis.value.RedisHashValue;
+import com.lwk.wochat.api.data.redis.value.RedisListValue;
+import com.lwk.wochat.api.data.redis.value.impl.RedisHashValueImpl;
+import com.lwk.wochat.api.data.redis.value.impl.RedisListValueImpl;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -251,5 +255,15 @@ public class RedisTemplateMap<K, V> implements RedisMap<K, V> {
     @Override
     public boolean expire(K key, Supplier<Duration> ttl) {
         return Boolean.TRUE.equals(redisTemplate.expire(fullKey(key), ttl.get()));
+    }
+
+    @Override
+    public RedisListValue<K, V> list(K key) {
+        return new RedisListValueImpl<>(key, redisTemplate.opsForList());
+    }
+
+    @Override
+    public RedisHashValue<K, V> hash(K key) {
+        return new RedisHashValueImpl<>(key, redisTemplate.opsForHash());
     }
 }

@@ -14,9 +14,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Optional;
 
-@SpringBootTest(classes = {
-        AccountServiceApplication.class
-})
+@SpringBootTest(classes = AccountServiceApplication.class)
 @SuppressWarnings("all")
 class AccountServiceApplicationTests {
     @Resource(type = RedisClient.class)

@@ -2,7 +2,7 @@ package com.lwk.wochat.api.data.redis;
 
 import com.lwk.wochat.api.ApiApplication;
 import com.lwk.wochat.api.configuration.RedisConfiguration;
-import com.lwk.wochat.api.data.redis.value.RedisHashValue;
+import com.lwk.wochat.api.data.redis.value.impl.RedisHashValueImpl;
 import com.lwk.wochat.api.pojo.entity.Account;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -23,13 +23,13 @@ class RedisMapTest {
 
     RedisTemplate<String, Account> redisTemplate;
     RedisTemplateMap<String, Account> redisMap;
-    RedisHashValue<String, Account> redisHashValueMap;
+    RedisHashValueImpl<String, Account> redisHashValueMap;
 
     @Before
     public void init() {
         redisTemplate = redisTemplateFactory.create(Account.class);
         redisMap = new RedisTemplateMap<>(redisTemplate, "RedisMapTest:");
-        redisHashValueMap = new RedisHashValue<>("RedisHashValueMapTest", redisTemplate.opsForHash());
+        redisHashValueMap = new RedisHashValueImpl<>("RedisHashValueMapTest", redisTemplate.opsForHash());
     }
 
     @Test

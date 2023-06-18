@@ -26,6 +26,18 @@ public final class Result<T> {
         this.message = Optional.ofNullable(message);
     }
 
+    public Result(T data, Code code) {
+        this.data = Optional.ofNullable(data);
+        this.code = code;
+        this.message = Optional.empty();
+    }
+
+    public Result(Code code, String message) {
+        this.data = Optional.empty();
+        this.code = code;
+        this.message = Optional.ofNullable(message);
+    }
+
     public Result() {
         this(Optional.empty(), null, Optional.empty());
     }

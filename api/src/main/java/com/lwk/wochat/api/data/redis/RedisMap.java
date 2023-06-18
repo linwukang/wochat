@@ -1,6 +1,10 @@
 package com.lwk.wochat.api.data.redis;
 
+import com.lwk.wochat.api.data.redis.value.RedisHashValue;
+import com.lwk.wochat.api.data.redis.value.RedisListValue;
+
 import java.time.Duration;
+import java.util.Deque;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -48,4 +52,7 @@ public interface RedisMap<K, V> extends Map<K, V> {
 
     boolean expire(K key, Supplier<Duration> ttl);
 
+    RedisListValue<K, V> list(K key);
+
+    RedisHashValue<K, V> hash(K key);
 }

@@ -4,7 +4,6 @@ import com.lwk.wochat.api.pojo.entity.Account;
 import com.lwk.wochat.api.pojo.entity.UserInfo;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.util.Optional;
 
 /**

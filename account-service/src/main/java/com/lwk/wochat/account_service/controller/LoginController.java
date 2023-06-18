@@ -10,6 +10,9 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Optional;
 
+/**
+ * 用于账号登录、登出等操作的 Controller
+ */
 @RestController
 @RequestMapping("/account")
 public class LoginController {
@@ -26,8 +29,8 @@ public class LoginController {
         Optional<String> tokenOptional = userLoginService.tryLogin(account);
 
         return tokenOptional
-                .map(Result::getSucceed)
-                .orElse(Result.getFailed());
+                .map(token -> new Result<>(token, Code.LOGIN_SUCCEED))
+                .orElse(new Result<>(Code.LOGIN_FAILED, "登录失败，用户名或密码错误"));
     }
 
     /**
@@ -41,8 +44,20 @@ public class LoginController {
         boolean logout = userLoginService.logout(account, token);
 
         return logout
-                ? new Result<>(true, Code.GET_SUCCEED, null)
-                : new Result<>(false, Code.GET_FAILED, "登出失败");
+                ? new Result<>(true, Code.LOGOUT_SUCCEED)
+                : new Result<>(false, Code.LOGIN_FAILED, "登出失败");
 
+    }
+
+    /**
+     * 判断用户是否已登录
+     * @param username 用户名
+     * @return 是否登录
+     */
+    @GetMapping("/logged/{username}")
+    public Result<Boolean> logged(@PathVariable String username) {
+        boolean logged = userLoginService.logged(Account.builder().username(username).build());
+
+        return new Result<>(logged, Code.GET_SUCCEED);
     }
 }

@@ -20,6 +20,12 @@ public final class Result<T> {
         this.message = message;
     }
 
+    public Result(T data, Code code, String message) {
+        this.data = Optional.ofNullable(data);
+        this.code = code;
+        this.message = Optional.ofNullable(message);
+    }
+
     public Result() {
         this(Optional.empty(), null, Optional.empty());
     }
@@ -52,6 +58,7 @@ public final class Result<T> {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
+
         var that = (Result) obj;
         return Objects.equals(this.data, that.data) &&
                 Objects.equals(this.code, that.code) &&

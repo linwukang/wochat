@@ -1,8 +1,10 @@
 package com.lwk.wochat.account_service.utils;
 
+import java.util.Random;
 import java.util.UUID;
 
 public class StringUtil {
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     /**
      * 生成随机 token 字符串
@@ -10,6 +12,26 @@ public class StringUtil {
      */
     public static String generateToken() {
         return UUID.randomUUID().toString();
+    }
+
+    public static String generateVerificationCode(int length) {
+        return generateVerificationCode(length, CHARACTERS);
+    }
+
+    public static String generateVerificationCode(int length, String characters) {
+        if (length == 0) {
+            throw new IllegalArgumentException("length == 0");
+        }
+        StringBuilder codeBuilder = new StringBuilder(length);
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            char c = characters.charAt(index);
+            codeBuilder.append(c);
+        }
+
+        return codeBuilder.toString();
     }
 
     public static boolean isBlank(String string) {

@@ -13,14 +13,14 @@ import java.util.Optional;
 public interface UserLoginService {
     /**
      * 尝试登录账号
-     * @param account Account 对象，包含账号和密码
+     * @param account Account 对象，包含用户名和密码
      * @return 如果登录成功则返回 token，否则返回 null
      */
     Optional<String> tryLogin(Account account);
 
     /**
      * 账号登出
-     * @param account Account 对象，包含账号和密码
+     * @param account Account 对象，包含用户名
      * @param token account 对应的 token
      * @return
      *      - true: 登出成功
@@ -31,7 +31,7 @@ public interface UserLoginService {
     /**
      * 检测账号是否已登录
      *
-     * @param account Account 对象，包含账号和密码
+     * @param account Account 对象，包含用户名
      * @return - true: 已登录
      * - false: 未登录
      */
@@ -48,11 +48,10 @@ public interface UserLoginService {
 
     /**
      * 校验密码是否正确
-     * @param account 账号
-     * @param password 密码
+     * @param account Account 对象，包含用户名和密码
      * @return
-     * - true: 账号密码正确
-     * - false: 账号或密码错误
+     * - true: 用户名密码正确
+     * - false: 用户名或密码错误
      */
     boolean verifyPassword(Account account);
 }

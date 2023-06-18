@@ -19,7 +19,7 @@
     <modules>
         <module>../account-service</module>
         <module>../api</module>
-        <module>../redis-service</module>
+<!--        <module>../redis-service</module>-->
     </modules>
 
     <properties>

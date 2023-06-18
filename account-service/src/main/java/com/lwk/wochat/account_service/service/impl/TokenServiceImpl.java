@@ -2,8 +2,8 @@ package com.lwk.wochat.account_service.service.impl;
 
 import com.lwk.wochat.account_service.service.TokenService;
 import com.lwk.wochat.account_service.utils.StringUtil;
-import com.lwk.wochat.api.data.redis.IRedisMap;
 import com.lwk.wochat.api.data.redis.RedisMap;
+import com.lwk.wochat.api.data.redis.RedisTemplateMap;
 import com.lwk.wochat.api.pojo.entity.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +19,11 @@ import static com.lwk.wochat.account_service.utils.StringConstant.TokenKeyPrefix
 
 @Service
 public class TokenServiceImpl implements TokenService {
-    Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);
-//    @Resource
-//    RedisClient redisClient;
-    IRedisMap<String, String> redis;
+    private final Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);
+    private final RedisMap<String, String> redis;
 
     public TokenServiceImpl(@Autowired RedisTemplate<String, String> redisTemplate) {
-        redis = new RedisMap<>(redisTemplate, "tokenService:");
+        redis = new RedisTemplateMap<>(redisTemplate, "tokenService:");
     }
 
     @Override

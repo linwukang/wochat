@@ -2,12 +2,15 @@ package com.lwk.wochat.account_service.service;
 
 import com.lwk.wochat.api.pojo.entity.Account;
 import com.lwk.wochat.api.pojo.entity.UserInfo;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.Optional;
 
 /**
  * 账号注册服务
  */
+@Transactional
 public interface RegistrationService {
     /**
      * 检测账号是否存在
@@ -43,7 +46,7 @@ public interface RegistrationService {
 
     /**
      * 注销账号
-     * @param account 注册账号，包含用户名和密码信息
+     * @param account 账号，包含用户名和密码信息
      * @return
      * <ul>
      *     <li>{@code true}: 注销成功</li>
@@ -51,6 +54,5 @@ public interface RegistrationService {
      * </ul>
      */
     boolean deregister(Account account);
-
 
 }

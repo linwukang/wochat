@@ -17,18 +17,18 @@ import javax.annotation.Resource;
 public class HelloController {
     Logger logger = LoggerFactory.getLogger(HelloController.class);
 
-    @Resource(type = RedisClient.class)
-    RedisClient redisClient;
+//    @Resource(type = RedisClient.class)
+//    RedisClient redisClient;
 
-//    @GetMapping("/hello")
-//    public String hello() {
-//        return "Hello Account Service";
-//    }
-
-    @GetMapping("/{key}")
-    public Result<String> get(@PathVariable String key) {
-        logger.info("key=" + key);
-        redisClient.save(key, "傻逼");
-        return redisClient.get(key);
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello Account Service";
     }
+
+//    @GetMapping("/{key}")
+//    public Result<String> get(@PathVariable String key) {
+//        logger.info("key=" + key);
+//        redisClient.save(key, "傻逼");
+//        return redisClient.get(key);
+//    }
 }

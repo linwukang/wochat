@@ -14,7 +14,7 @@ import java.util.Optional;
  * 用于账号登录、登出等操作的 Controller
  */
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/account-login")
 public class LoginController {
     @Resource
     private UserLoginService userLoginService;

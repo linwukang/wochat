@@ -35,9 +35,9 @@ class RedisValueMapTest {
     public void testRedisHashValueMap() {
         init();
 
-        Account account1 = new Account(1L, "aaa", "aaaa", null);
-        Account account2 = new Account(2L, "bbb", "bbbb", null);
-        Account account3 = new Account(3L, "ccc", "cccc", null);
+        Account account1 = new Account(1L, "aaa", "aaaa", null, null);
+        Account account2 = new Account(2L, "bbb", "bbbb", null, null);
+        Account account3 = new Account(3L, "ccc", "cccc", null, null);
 
         assertTrue(redisHashValueMap.isEmpty());
 

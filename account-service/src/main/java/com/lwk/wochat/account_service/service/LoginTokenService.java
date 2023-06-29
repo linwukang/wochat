@@ -5,15 +5,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.Future;
 import java.time.Duration;
-import java.util.Date;
 import java.util.Optional;
 
 /**
- * Token 服务
+ * 登录的 Token 服务
  * 通过 token 实现账号登录功能
  */
 @Transactional
-public interface TokenService {
+public interface LoginTokenService {
     /**
      * 为账号添加 token，表示账号已登录
      * @param account 登录账号信息

@@ -1,6 +1,6 @@
 package com.lwk.wochat.account_service.service.impl;
 
-import com.lwk.wochat.account_service.service.TokenService;
+import com.lwk.wochat.account_service.service.LoginTokenService;
 import com.lwk.wochat.account_service.utils.StringUtil;
 import com.lwk.wochat.api.data.redis.RedisMap;
 import com.lwk.wochat.api.data.redis.RedisTemplateMap;
@@ -18,11 +18,11 @@ import static com.lwk.wochat.account_service.utils.StringConstant.AccountTokenKe
 import static com.lwk.wochat.account_service.utils.StringConstant.TokenKeyPrefix;
 
 @Service
-public class TokenServiceImpl implements TokenService {
-    private final Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);
+public class LoginTokenServiceImpl implements LoginTokenService {
+    private final Logger logger = LoggerFactory.getLogger(LoginTokenServiceImpl.class);
     private final RedisMap<String, String> redis;
 
-    public TokenServiceImpl(@Autowired RedisTemplate<String, String> redisTemplate) {
+    public LoginTokenServiceImpl(@Autowired RedisTemplate<String, String> redisTemplate) {
         redis = new RedisTemplateMap<>(redisTemplate, "tokenService:");
     }
 

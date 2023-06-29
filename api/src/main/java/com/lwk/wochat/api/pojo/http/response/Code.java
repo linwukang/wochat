@@ -11,5 +11,7 @@ public enum Code {
     LOGIN_FAILED,       // 登录失败
     LOGOUT_SUCCEED,     // 登出成功
     LOGOUT_FAILED,      // 登出失败
+    REGISTER_SUCCEED,   // 注册成功
+    REGISTER_FAILED,    // 注册失败
     ERROR               // 异常
 }

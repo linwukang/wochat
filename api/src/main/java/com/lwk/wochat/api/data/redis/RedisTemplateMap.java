@@ -4,6 +4,7 @@ import com.lwk.wochat.api.data.redis.value.RedisHashValue;
 import com.lwk.wochat.api.data.redis.value.RedisListValue;
 import com.lwk.wochat.api.data.redis.value.impl.RedisHashValueImpl;
 import com.lwk.wochat.api.data.redis.value.impl.RedisListValueImpl;
+import org.springframework.core.serializer.Serializer;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -239,11 +240,11 @@ public class RedisTemplateMap<K, V> implements RedisMap<K, V> {
     }
 
     @Override
-    public void putAllWithExpire(Map<? extends K, ? extends V> m, Supplier<Duration> ttl) {
+    public void putAllWithExpire(Map<? extends K, ? extends V> m, Supplier<Duration> ttlSupplier) {
         m.forEach(
                 (key, value) -> {
                     redisTemplate.opsForValue().set(fullKey(key), value);
-                    redisTemplate.expire(fullKey(key), ttl.get());
+                    redisTemplate.expire(fullKey(key), ttlSupplier.get());
                 });
     }
 
@@ -265,5 +266,15 @@ public class RedisTemplateMap<K, V> implements RedisMap<K, V> {
     @Override
     public RedisHashValue<K, V> hash(K key) {
         return new RedisHashValueImpl<>(key, redisTemplate.opsForHash());
+    }
+
+    @Override
+    public RedisSerializer<K> keySerializer() {
+        return keySerializer;
+    }
+
+    @Override
+    public RedisSerializer<V> valueSerializer() {
+        return (RedisSerializer<V>) redisTemplate.getValueSerializer();
     }
 }

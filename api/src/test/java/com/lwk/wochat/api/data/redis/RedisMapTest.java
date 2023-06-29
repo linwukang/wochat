@@ -4,15 +4,18 @@ import com.lwk.wochat.api.ApiApplication;
 import com.lwk.wochat.api.configuration.RedisConfiguration;
 import com.lwk.wochat.api.data.redis.value.impl.RedisHashValueImpl;
 import com.lwk.wochat.api.pojo.entity.Account;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.Set;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,24 +24,30 @@ class RedisMapTest {
     @Resource
     RedisConfiguration.RedisTemplateFactory<Account> redisTemplateFactory;
 
+    @Resource
+    RedisConfiguration.RedisTemplateFactory<String> redisTemplateStringFactory;
+
     RedisTemplate<String, Account> redisTemplate;
     RedisTemplateMap<String, Account> redisMap;
+    RedisMap<String, String> redisMapString;
     RedisHashValueImpl<String, Account> redisHashValueMap;
+    @Autowired
+    RedisTemplate<String, String> redisTemplateString;
 
-    @Before
-    public void init() {
+    @BeforeEach
+    public void setUp() {
         redisTemplate = redisTemplateFactory.create(Account.class);
         redisMap = new RedisTemplateMap<>(redisTemplate, "RedisMapTest:");
         redisHashValueMap = new RedisHashValueImpl<>("RedisHashValueMapTest", redisTemplate.opsForHash());
+
+        redisMapString = new RedisTemplateMap<>(redisTemplateString, "testPair:");
     }
 
     @Test
     public void testRedisTemplateMap() {
-        init();
-
-        Account account1 = new Account(1L, "aaa", "aaaa", null);
-        Account account2 = new Account(2L, "bbb", "bbbb", null);
-        Account account3 = new Account(3L, "ccc", "cccc", null);
+        Account account1 = Account.builder().id(1L).username("aaa").password("aaaa").build();
+        Account account2 = Account.builder().id(2L).username("bbb").password("bbbb").build();
+        Account account3 = Account.builder().id(3L).username("ccc").password("cccc").build();
         assertEquals(account1, redisMap.put("test001", account1));
         assertEquals(account2, redisMap.put("test002", account2));
         assertEquals(account3, redisMap.put("test003", account3));
@@ -67,17 +76,20 @@ class RedisMapTest {
     }
 
     @Test
-    public void testRedisTemplateMap001() {
-        init();
-        int count = 100_000;
-        for (int i = 0; i < count; i++) {
-            redisMap.put("" + i, new Account((long) i, UUID.randomUUID().toString(), UUID.randomUUID().toString(), new Date()));
-        }
-        assertEquals(count, redisMap.size());
-        Set<String> keys = redisMap.keySet();
+    public void testPair() {
+        redisMapString.putPair("test001", "test002");
+        assertEquals("test002", redisMapString.getOther("test001"));
+        assertEquals("test001", redisMapString.getOther("test002"));
+        assertEquals("test002", redisMapString.removePair("test001"));
 
-        redisMap.clear();
-        assertTrue(redisMap.isEmpty());
+        redisMapString.putPair("test001", "test002");
+        assertEquals("test002", redisMapString.getOther("test001"));
+        assertEquals("test001", redisMapString.getOther("test002"));
+        assertEquals("test001", redisMapString.removePair("test002"));
+
+        redisMapString.putPair("test003", "test003");
+        assertEquals("test003", redisMapString.getOther("test003"));
+        assertEquals("test003", redisMapString.removePair("test003"));
     }
 
 }

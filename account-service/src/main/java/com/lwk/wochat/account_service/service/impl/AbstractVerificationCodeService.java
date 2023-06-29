@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.time.Duration;
+import java.util.Objects;
 
 public abstract class AbstractVerificationCodeService implements VerificationCodeService {
     protected final Logger logger;
@@ -21,10 +22,10 @@ public abstract class AbstractVerificationCodeService implements VerificationCod
     }
 
     @Override
-    public String generateVerificationCode(int length, Duration ttl) {
+    public String generateVerificationCode(int length, String content, Duration ttl) {
         String code = StringUtil.generateVerificationCode(length);
-        if (!checkVerificationCode(code)) {
-            redis.putWithExpire(code, "", ttl);
+        if (!redis.containsKey(code)) {
+            redis.putWithExpire(code, content, ttl);
             return code;
         }
         else {
@@ -35,8 +36,10 @@ public abstract class AbstractVerificationCodeService implements VerificationCod
     }
 
     @Override
-    public boolean checkVerificationCode(String code) {
-        return redis.containsKey(code);
+    public boolean checkVerificationCode(String code, String content) {
+        String c = redis.get(code);
+
+        return Objects.equals(c, content);
     }
 
     @Override

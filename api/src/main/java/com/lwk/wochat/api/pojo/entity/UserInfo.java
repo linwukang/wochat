@@ -20,10 +20,6 @@ public class UserInfo {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
-    private Account account;
-
     @Column(name = "email")
     private String email;
 
@@ -38,4 +34,8 @@ public class UserInfo {
 
     @Column(name = "avatar_url")
     private String avatarUrl;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
 }

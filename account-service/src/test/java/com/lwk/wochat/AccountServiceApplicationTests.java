@@ -1,18 +1,13 @@
 package com.lwk.wochat;
 
 import com.lwk.wochat.account_service.AccountServiceApplication;
-import com.lwk.wochat.account_service.service.TokenService;
-import com.lwk.wochat.account_service.service.UserLoginService;
 import com.lwk.wochat.api.clients.RedisClient;
 import com.lwk.wochat.api.pojo.entity.Account;
 import com.lwk.wochat.api.pojo.http.response.Code;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.Optional;
 
 @SpringBootTest(classes = AccountServiceApplication.class)
 @SuppressWarnings("all")
@@ -25,10 +20,10 @@ class AccountServiceApplicationTests {
      */
 //    @Test
     void testRedisClient() {
-        Account account1 = new Account(1L, "111", "aaa", null);
-        Account account2 = new Account(2L, "222", "bbb", null);
-        Account account3 = new Account(3L, "333", "ccc", null);
-        Account account4 = new Account(4L, "444", "ddd", null);
+        Account account1 = new Account(1L, "111", "aaa", null, null);
+        Account account2 = new Account(2L, "222", "bbb", null, null);
+        Account account3 = new Account(3L, "333", "ccc", null, null);
+        Account account4 = new Account(4L, "444", "ddd", null, null);
         // 增
         Assertions.assertEquals(Code.SAVA_SUCCEED, redisClient.save("test001", account1).getCode());
         Assertions.assertEquals(Code.SAVA_SUCCEED, redisClient.save("test002", account2).getCode());

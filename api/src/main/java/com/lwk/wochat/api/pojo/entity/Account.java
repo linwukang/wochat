@@ -31,4 +31,9 @@ public class Account {
     @Column(name = "create_time")
     @CreatedDate
     private Date createTime;
+
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_info_id")
+    private UserInfo userInfo;
 }

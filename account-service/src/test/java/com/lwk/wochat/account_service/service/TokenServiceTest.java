@@ -13,15 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = AccountServiceApplication.class)
 class TokenServiceTest {
-    @Resource(type = TokenService.class)
-    TokenService tokenService;
+    @Resource(type = LoginTokenService.class)
+    LoginTokenService tokenService;
 
     /**
-     * 测试 {@link TokenService} 的基本功能
+     * 测试 {@link LoginTokenService} 的基本功能
      */
     @Test
     void testTokenService() {
-        Account account1 = new Account(1L, "111", "aaa", new Date());
+        Account account1 = new Account(1L, "111", "aaa", new Date(), null);
         String token = tokenService.login(account1);
 
         Optional<String> accountOptional = tokenService.tryGetAccount(token);

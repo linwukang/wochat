@@ -1,6 +1,6 @@
 package com.lwk.wochat.account_service.service.impl;
 
-import com.lwk.wochat.account_service.service.TokenService;
+import com.lwk.wochat.account_service.service.LoginTokenService;
 import com.lwk.wochat.account_service.service.UserLoginService;
 import com.lwk.wochat.api.dao.repository.AccountRepository;
 import com.lwk.wochat.api.pojo.entity.Account;
@@ -16,7 +16,7 @@ public class UserLoginServiceImpl implements UserLoginService {
     private AccountRepository accountRepository;
 
     @Resource
-    private TokenService tokenService;
+    private LoginTokenService tokenService;
 
     @Override
     public Optional<String> tryLogin(Account account) {

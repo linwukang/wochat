@@ -2,10 +2,11 @@ package com.lwk.wochat.api.data.redis;
 
 import com.lwk.wochat.api.data.redis.value.RedisHashValue;
 import com.lwk.wochat.api.data.redis.value.RedisListValue;
+import org.springframework.data.redis.serializer.RedisSerializer;
 
 import java.time.Duration;
-import java.util.Deque;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public interface RedisMap<K, V> extends Map<K, V> {
@@ -50,9 +51,59 @@ public interface RedisMap<K, V> extends Map<K, V> {
      */
     boolean expire(K key, Duration ttl);
 
-    boolean expire(K key, Supplier<Duration> ttl);
+    boolean expire(K key, Supplier<Duration> ttlSupplier);
 
+    /**
+     * 通过 key 获取 list 值操作对象
+     * @param key 键
+     * @return list value
+     */
     RedisListValue<K, V> list(K key);
 
+    /**
+     * 通过 key 获取 hash 值操作对象
+     * @param key 键
+     * @return hash value
+     */
     RedisHashValue<K, V> hash(K key);
+
+    RedisSerializer<K> keySerializer();
+
+    RedisSerializer<V> valueSerializer();
+
+    String pairKeyPrefix = "__pair__:";
+
+    @SuppressWarnings("all")
+    default void putPair(K item1, V item2) {
+        String fullKeyString1 = pairKeyPrefix + new String(keySerializer().serialize(item1));
+        K fullKey1 = keySerializer().deserialize(fullKeyString1.getBytes());
+        put(fullKey1, item2);
+
+        if (!Objects.equals(item1, item2))
+        {
+            String fullKeyString2 = pairKeyPrefix + new String(valueSerializer().serialize(item2));
+            K fullKey2 = keySerializer().deserialize(fullKeyString2.getBytes());
+            put(fullKey2, valueSerializer().deserialize(keySerializer().serialize(item1)));
+        }
+    }
+
+    @SuppressWarnings("all")
+    default V getOther(K key) {
+        String fullKeyString = pairKeyPrefix + new String(keySerializer().serialize(key));
+        K fullKey = keySerializer().deserialize(fullKeyString.getBytes());
+        return get(fullKey);
+    }
+
+    @SuppressWarnings("all")
+    default V removePair(K key) {
+        String fullKeyString1 = pairKeyPrefix + new String(keySerializer().serialize(key));
+        K fullKey1 = keySerializer().deserialize(fullKeyString1.getBytes());
+        V v = remove(fullKey1);
+
+        String fullKeyString2 = pairKeyPrefix + new String(valueSerializer().serialize(v));
+        K fullKey2 = keySerializer().deserialize(fullKeyString2.getBytes());
+        remove(fullKey2);
+
+        return v;
+    }
 }

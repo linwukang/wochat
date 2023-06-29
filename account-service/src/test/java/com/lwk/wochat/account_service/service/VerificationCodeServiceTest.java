@@ -18,12 +18,12 @@ class VerificationCodeServiceTest {
 
     @Test
     public void testVerificationCodeService() {
-        String code = verificationCodeService.generateVerificationCode(16, Duration.ofSeconds(1000));
+        String code = verificationCodeService.generateVerificationCode(16, "aaa", Duration.ofSeconds(1000));
         assertEquals(16, code.length());
         assertTrue(verificationCodeService.sendVerificationCode(code, Duration.ofSeconds(1000), "1145141919810"));
-        assertTrue(verificationCodeService.checkVerificationCode(code));
+        assertTrue(verificationCodeService.checkVerificationCode(code, "aaa"));
         verificationCodeService.invalidateVerificationCode(code);
-        assertFalse(verificationCodeService.checkVerificationCode(code));
+        assertFalse(verificationCodeService.checkVerificationCode(code, "aaa"));
     }
 
 }

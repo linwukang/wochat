@@ -41,7 +41,7 @@ public class CacheTests {
 
             @Override
             public void delete(String key) {
-                accountRepository.delete(new Account(null, key, null, null));
+                accountRepository.delete(new Account(null, key, null, null, null));
             }
 
             @Override
@@ -63,7 +63,7 @@ public class CacheTests {
 
     @Test
     public void testRedisCache() {
-        Account account = new Account(7L, "testRedisCache0001", "aaaaaa", new Date());
+        Account account = new Account(7L, "testRedisCache0001", "aaaaaa", new Date(), null);
 //        System.out.println(account);
 
         cache.set(account.getId().toString(), account, Account.class);

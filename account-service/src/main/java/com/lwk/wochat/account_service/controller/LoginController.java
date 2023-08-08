@@ -26,38 +26,38 @@ public class LoginController {
      */
     @PostMapping("/login")
     public Result<String> login(@Valid @RequestBody Account account) {
-        Optional<String> tokenOptional = userLoginService.tryLogin(account);
+        Optional<String> tokenOptional = userLoginService.tryLogin(account.getUsername(), account.getPassword());
 
         return tokenOptional
-                .map(token -> new Result<>(token, Code.LOGIN_SUCCEED))
-                .orElse(new Result<>(Code.LOGIN_FAILED, "登录失败，用户名或密码错误"));
+                .map(token -> Result.ok(token))
+                .orElse(Result.badRequest( "登录失败，用户名或密码错误"));
     }
 
     /**
      * 登出
-     * @param account 账号信息，包含用户名
+     * @param userId 用户 id
      * @param token token
      * @return 是否成功
      */
-    @PostMapping("/logout/{token}")
-    public Result<Boolean> logout(@RequestBody Account account, @PathVariable String token) {
-        boolean logout = userLoginService.logout(account, token);
+    @GetMapping("/logout/{userId}/{token}")
+    public Result<Boolean> logout(@PathVariable long userId, @PathVariable String token) {
+        boolean logout = userLoginService.logout(userId, token);
 
         return logout
-                ? new Result<>(true, Code.LOGOUT_SUCCEED)
-                : new Result<>(false, Code.LOGIN_FAILED, "登出失败");
+                ? Result.ok(true)
+                : Result.badRequest(false, "登出失败");
 
     }
 
     /**
      * 判断用户是否已登录
-     * @param username 用户名
+     * @param id 用户 id
      * @return 是否登录
      */
-    @GetMapping("/logged/{username}")
-    public Result<Boolean> logged(@PathVariable String username) {
-        boolean logged = userLoginService.logged(Account.builder().username(username).build());
+    @GetMapping("/logged/{id}")
+    public Result<Boolean> logged(@PathVariable long id) {
+        boolean logged = userLoginService.logged(id);
 
-        return new Result<>(logged, Code.GET_SUCCEED);
+        return new Result<>(logged, Code.OK);
     }
 }

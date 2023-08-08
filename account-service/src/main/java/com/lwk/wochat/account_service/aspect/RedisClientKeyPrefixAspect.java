@@ -17,6 +17,7 @@ import java.util.Arrays;
  * 对 {@link com.lwk.wochat.api.clients.RedisClient} 所有的 key 添加前缀 "accountService:"
  */
 @Aspect
+@Deprecated
 @Component
 public class RedisClientKeyPrefixAspect {
     @Pointcut(value = "execution(public * com.lwk.wochat.api.clients.RedisClient.*(..))")

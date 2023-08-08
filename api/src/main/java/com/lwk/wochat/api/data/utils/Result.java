@@ -151,8 +151,11 @@ public final class Result<T> {
             return true;
         }
 
-        return obj instanceof Result<?> other
-                && Objects.equals(value, other.value);
+        if (obj instanceof Result<?>) {
+            Result<?> other = (Result<?>) obj;
+            if (Objects.equals(value, other.value)) return true;
+        }
+        return false;
     }
 
     @Override

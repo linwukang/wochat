@@ -34,15 +34,15 @@ class UserLoginServiceTest {
         Account account03 = Account.builder().username("test0003").password("cccccc").build();
         Account account04 = Account.builder().username("test0004").password("dddddd").build();
 
-        assertFalse(userLoginService.logged(account01));
-        assertFalse(userLoginService.logged(account02));
-        assertFalse(userLoginService.logged(account03));
-        assertFalse(userLoginService.logged(account04));
+        assertFalse(userLoginService.logged(account01.getId()));
+        assertFalse(userLoginService.logged(account02.getId()));
+        assertFalse(userLoginService.logged(account03.getId()));
+        assertFalse(userLoginService.logged(account04.getId()));
 
-        Optional<String> tokOptional01 = userLoginService.tryLogin(account01);
-        Optional<String> tokOptional02 = userLoginService.tryLogin(account02);
-        Optional<String> tokOptional03 = userLoginService.tryLogin(account03);
-        Optional<String> tokOptional04 = userLoginService.tryLogin(account04);
+        Optional<String> tokOptional01 = userLoginService.tryLogin(account01.getUsername(), account01.getPassword());
+        Optional<String> tokOptional02 = userLoginService.tryLogin(account02.getUsername(), account02.getPassword());
+        Optional<String> tokOptional03 = userLoginService.tryLogin(account03.getUsername(), account03.getPassword());
+        Optional<String> tokOptional04 = userLoginService.tryLogin(account04.getUsername(), account04.getPassword());
 
         assertTrue(tokOptional01.isPresent());
         assertTrue(tokOptional02.isPresent());
@@ -54,19 +54,19 @@ class UserLoginServiceTest {
         String tok03 = tokOptional03.get();
         String tok04 = tokOptional04.get();
 
-        assertTrue(userLoginService.logged(account01));
-        assertTrue(userLoginService.logged(account02));
-        assertTrue(userLoginService.logged(account03));
-        assertTrue(userLoginService.logged(account04));
+        assertTrue(userLoginService.logged(account01.getId()));
+        assertTrue(userLoginService.logged(account02.getId()));
+        assertTrue(userLoginService.logged(account03.getId()));
+        assertTrue(userLoginService.logged(account04.getId()));
 
-        assertTrue(userLoginService.logout(account01, tok01));
-        assertTrue(userLoginService.logout(account02, tok02));
-        assertTrue(userLoginService.logout(account03, tok03));
-        assertTrue(userLoginService.logout(account04, tok04));
+        assertTrue(userLoginService.logout(account01.getId(), tok01));
+        assertTrue(userLoginService.logout(account02.getId(), tok02));
+        assertTrue(userLoginService.logout(account03.getId(), tok03));
+        assertTrue(userLoginService.logout(account04.getId(), tok04));
 
-        assertFalse(userLoginService.logged(account01));
-        assertFalse(userLoginService.logged(account02));
-        assertFalse(userLoginService.logged(account03));
-        assertFalse(userLoginService.logged(account04));
+        assertFalse(userLoginService.logged(account01.getId()));
+        assertFalse(userLoginService.logged(account02.getId()));
+        assertFalse(userLoginService.logged(account03.getId()));
+        assertFalse(userLoginService.logged(account04.getId()));
     }
 }

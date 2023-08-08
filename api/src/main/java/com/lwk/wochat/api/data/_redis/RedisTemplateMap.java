@@ -1,10 +1,9 @@
-package com.lwk.wochat.api.data.redis;
+package com.lwk.wochat.api.data._redis;
 
-import com.lwk.wochat.api.data.redis.value.RedisHashValue;
-import com.lwk.wochat.api.data.redis.value.RedisListValue;
-import com.lwk.wochat.api.data.redis.value.impl.RedisHashValueImpl;
-import com.lwk.wochat.api.data.redis.value.impl.RedisListValueImpl;
-import org.springframework.core.serializer.Serializer;
+import com.lwk.wochat.api.data._redis.value.RedisHashValue;
+import com.lwk.wochat.api.data._redis.value.RedisListValue;
+import com.lwk.wochat.api.data._redis.value.impl.RedisHashValueImpl;
+import com.lwk.wochat.api.data._redis.value.impl.RedisListValueImpl;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -37,7 +36,8 @@ public class RedisTemplateMap<K, V> implements RedisMap<K, V> {
     }
 
     private K concat(K key, String s) {
-        if (key instanceof String keyString) {
+        if (key instanceof String) {
+            String keyString = (String) key;
             return keySerializer.deserialize((keyString + s).getBytes());
         }
 
@@ -47,7 +47,8 @@ public class RedisTemplateMap<K, V> implements RedisMap<K, V> {
     }
 
     private K concat(String s, K key) {
-        if (key instanceof String keyString) {
+        if (key instanceof String) {
+            String keyString = (String) key;
             return keySerializer.deserialize((s + keyString).getBytes());
         }
 
@@ -57,7 +58,9 @@ public class RedisTemplateMap<K, V> implements RedisMap<K, V> {
     }
 
     private K concat(K key1, K key2) {
-        if (key1 instanceof String keyString1 && key2 instanceof String keyString2) {
+        if (key1 instanceof String && key2 instanceof String) {
+            String keyString1 = (String) key1;
+            String keyString2 = (String) key2;
             return keySerializer.deserialize((keyString1 + keyString2).getBytes());
         }
 

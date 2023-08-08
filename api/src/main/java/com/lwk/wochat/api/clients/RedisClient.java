@@ -6,7 +6,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 来自 {@link com.lwk.wochat.redis_service.controller.RedisController}
  */
 @Deprecated
 @FeignClient(value = "redis-service", path = "redis")
@@ -28,8 +27,8 @@ public interface RedisClient {
         Result<String> stringResult = get(key);
         return stringResult
                 .getData()
-                .map(s -> Result.getSucceed(BeanUtil.jsonStringToBean(s, type)))
-                .orElse(Result.<T>getFailed());
+                .map(s -> Result.ok(BeanUtil.jsonStringToBean(s, type)))
+                .orElse(Result.notFound());
     }
 
     default <T> Result<String> save(String key, T value) {

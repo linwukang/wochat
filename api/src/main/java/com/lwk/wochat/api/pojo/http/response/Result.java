@@ -8,62 +8,51 @@ import java.util.Optional;
  * 用于统一响应数据的内容
  */
 public final class Result<T> {
-    private Optional<T> data;
-    private Code code;
-    private Optional<String> message;
+    private T data;
+    private int code;
+    private String message;
 
     /**
      */
-    public Result(Optional<T> data, Code code, Optional<String> message) {
+    public Result(T data, int code, String message) {
         this.data = data;
         this.code = code;
         this.message = message;
     }
 
-    public Result(T data, Code code, String message) {
-        this.data = Optional.ofNullable(data);
+    public Result(T data, int code) {
+        this.data = data;
         this.code = code;
-        this.message = Optional.ofNullable(message);
+        this.message = null;
     }
 
-    public Result(T data, Code code) {
-        this.data = Optional.ofNullable(data);
+    public Result(int code, String message) {
+        this.data = null;
         this.code = code;
-        this.message = Optional.empty();
+        this.message = null;
     }
-
-    public Result(Code code, String message) {
-        this.data = Optional.empty();
-        this.code = code;
-        this.message = Optional.ofNullable(message);
-    }
-
-    public Result() {
-        this(Optional.empty(), null, Optional.empty());
-    }
-
     public Optional<T> getData() {
-        return data;
+        return Optional.ofNullable(data);
     }
 
-    public Code getCode() {
+    public int getCode() {
         return code;
     }
 
     public Optional<String> getMessage() {
-        return message;
+        return Optional.ofNullable(message);
     }
 
     public void setData(T data) {
-        this.data = Optional.ofNullable(data);
+        this.data = data;
     }
 
-    public void setCode(Code code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
     public void setMessage(String message) {
-        this.message = Optional.ofNullable(message);
+        this.message = message;
     }
 
     @Override
@@ -95,65 +84,97 @@ public final class Result<T> {
     ///         静态方法           ///
     /////////////////////////////////
 
-    public static <T> Result<T> error() {
+    public static <T> Result<T> badRequest() {
         return new Result<>(
-                Optional.empty(),
-                Code.ERROR,
-                Optional.of("服务器繁忙，请稍后重试")
+                null,
+                Code.BAD_REQUEST,
+                "服务器繁忙，请稍后重试"
         );
     }
 
-    public static <T> Result<T> getSucceed(T data) {
-        if (data == null) {
-            throw new NullPointerException("data is null");
-        }
-
+    public static <T> Result<T> badRequest(String message) {
         return new Result<>(
-                Optional.of(data),
-                Code.GET_SUCCEED,
-                Optional.empty()
+                null,
+                Code.BAD_REQUEST,
+                message
         );
     }
 
-    public static <T> Result<T> getFailed() {
+    public static <T> Result<T> badRequest(T data, String message) {
         return new Result<>(
-                Optional.empty(),
-                Code.GET_FAILED,
-                Optional.of("获取数据失败")
+                data,
+                Code.BAD_REQUEST,
+                message
         );
     }
 
 
-    public static <T> Result<T> saveSucceed() {
+    public static <T> Result<T> ok() {
         return new Result<>(
-                Optional.empty(),
-                Code.SAVA_SUCCEED,
-                Optional.empty()
+                null,
+                Code.OK,
+                null
         );
     }
 
-    public static <T> Result<T> saveFailed() {
+    public static <T> Result<T> ok(T data) {
         return new Result<>(
-                Optional.empty(),
-                Code.SAVA_FAILED,
-                Optional.of("保存数据失败")
+                data,
+                Code.OK,
+                null
         );
     }
 
-    public static <T> Result<T> removeSucceed() {
+    public static <T> Result<T> ok(T data, String message) {
         return new Result<>(
-                Optional.empty(),
-                Code.REMOVE_SUCCEED,
-                Optional.empty()
+                data,
+                Code.OK,
+                message
         );
     }
 
-    public static <T> Result<T> removeFailed() {
+    public static <T> Result<T> noContent() {
         return new Result<>(
-                Optional.empty(),
-                Code.REMOVE_FAILED,
-                Optional.of("删除数据失败")
+                null,
+                Code.NO_CONTENT
         );
     }
 
+    public static <T> Result<T> noContent(String message) {
+        return new Result<>(
+                null,
+                Code.NO_CONTENT,
+                message
+        );
+    }
+
+    public static <T> Result<T> unauthorized() {
+        return new Result<>(
+                null,
+                Code.UNAUTHORIZED
+        );
+    }
+
+    public static <T> Result<T> unauthorized(String message) {
+        return new Result<>(
+                null,
+                Code.UNAUTHORIZED,
+                message
+        );
+    }
+
+    public static <T> Result<T> notFound() {
+        return new Result<>(
+                null,
+                Code.NOT_FOUND
+        );
+    }
+
+    public static <T> Result<T> notFound(String message) {
+        return new Result<>(
+                null,
+                Code.NOT_FOUND,
+                message
+        );
+    }
 }

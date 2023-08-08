@@ -2,17 +2,15 @@ package com.lwk.wochat.api.data.redis;
 
 import com.lwk.wochat.api.ApiApplication;
 import com.lwk.wochat.api.configuration.RedisConfiguration;
-import com.lwk.wochat.api.data.redis.value.impl.RedisHashValueImpl;
+import com.lwk.wochat.api.data._redis.RedisMap;
+import com.lwk.wochat.api.data._redis.RedisTemplateMap;
+import com.lwk.wochat.api.data._redis.value.impl.RedisHashValueImpl;
 import com.lwk.wochat.api.pojo.entity.Account;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.Set;

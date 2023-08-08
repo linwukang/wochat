@@ -2,8 +2,8 @@ package com.lwk.wochat.api.data.redis.value;
 
 import com.lwk.wochat.api.ApiApplication;
 import com.lwk.wochat.api.configuration.RedisConfiguration;
-import com.lwk.wochat.api.data.redis.RedisTemplateMap;
-import com.lwk.wochat.api.data.redis.value.impl.RedisHashValueImpl;
+import com.lwk.wochat.api.data._redis.RedisTemplateMap;
+import com.lwk.wochat.api.data._redis.value.impl.RedisHashValueImpl;
 import com.lwk.wochat.api.pojo.entity.Account;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;

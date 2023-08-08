@@ -1,11 +1,8 @@
 package com.lwk.wochat.api;
 
 
-import com.lwk.wochat.api.clients.RedisClient;
-import com.lwk.wochat.api.clients.SbSpring;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.redis.core.RedisTemplate;

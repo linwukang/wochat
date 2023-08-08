@@ -1,6 +1,6 @@
-package com.lwk.wochat.api.data.redis.value.impl;
+package com.lwk.wochat.api.data._redis.value.impl;
 
-import com.lwk.wochat.api.data.redis.value.RedisListValue;
+import com.lwk.wochat.api.data._redis.value.RedisListValue;
 import org.springframework.data.redis.core.ListOperations;
 
 import java.util.*;

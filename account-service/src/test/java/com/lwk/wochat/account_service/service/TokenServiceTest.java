@@ -22,9 +22,9 @@ class TokenServiceTest {
     @Test
     void testTokenService() {
         Account account1 = new Account(1L, "111", "aaa", new Date(), null);
-        String token = tokenService.login(account1);
+        String token = tokenService.login(account1.getUsername(), account1.getPassword());
 
-        Optional<String> accountOptional = tokenService.tryGetAccount(token);
+        Optional<String> accountOptional = tokenService.tryGetUsername(token);
         assertTrue(accountOptional.isPresent());
         assertEquals(account1.getUsername(), accountOptional.get());
 
@@ -34,7 +34,7 @@ class TokenServiceTest {
 
         tokenService.invalidateToken(token);
 
-        assertFalse(tokenService.tryGetAccount(token).isPresent());
+        assertFalse(tokenService.tryGetUsername(token).isPresent());
         assertFalse(tokenService.tryGetToken(account1.getUsername()).isPresent());
     }
 

@@ -19,10 +19,10 @@ public class UserLoginServiceImpl implements UserLoginService {
     private LoginTokenService tokenService;
 
     @Override
-    public Optional<String> tryLogin(Account account) {
-        if (verifyPassword(account)) {
+    public Optional<String> tryLogin(String username, String password) {
+        if (verifyPassword(username, password)) {
             // 登录成功
-            String token = tokenService.login(account);
+            String token = tokenService.login(username, password);
             return Optional.of(token);
         }
         else {
@@ -32,9 +32,14 @@ public class UserLoginServiceImpl implements UserLoginService {
     }
 
     @Override
-    public boolean logout(Account account, String token) {
+    public boolean logout(long userId, String token) {
+        Optional<Account> account = accountRepository.findById(userId);
+        if (account.isEmpty()) {
+            return false;
+        }
+
         return tokenService
-                .tryGetToken(account.getUsername())
+                .tryGetToken(account.get().getUsername())
                 .map(tk -> {
                     if (tk.equals(token)) {
                         tokenService.invalidateToken(tk);
@@ -48,19 +53,35 @@ public class UserLoginServiceImpl implements UserLoginService {
     }
 
     @Override
-    public boolean logged(Account account) {
+    public boolean logged(long userId) {
+        Optional<Account> account = accountRepository.findById(userId);
+        if (account.isEmpty()) {
+            return false;
+        }
+
         return tokenService
-                .tryGetToken(account.getUsername())
+                .tryGetToken(account.get().getUsername())
                 .isPresent();
     }
 
     @Override
-    public boolean accountExisted(Account account) {
-        return accountRepository.count(Example.of(account)) == 1;
+    public boolean usernameExisted(String username) {
+        return accountRepository.count(
+                Example.of(
+                        Account
+                                .builder()
+                                .username(username)
+                                .build())) == 1;
     }
 
     @Override
-    public boolean verifyPassword(Account account) {
-        return accountRepository.count(Example.of(account)) == 1;
+    public boolean verifyPassword(String username, String password) {
+        return accountRepository.count(
+                Example.of(
+                        Account
+                                .builder()
+                                .username(username)
+                                .password(password)
+                                .build())) == 1;
     }
 }

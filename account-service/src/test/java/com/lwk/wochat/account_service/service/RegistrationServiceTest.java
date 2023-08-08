@@ -37,12 +37,12 @@ class RegistrationServiceTest {
         assertEquals(account.getPassword(), accountOptional.get().getPassword());
 
         account = accountOptional.get();
-        Optional<String> tokenOptional = userLoginService.tryLogin(account);
+        Optional<String> tokenOptional = userLoginService.tryLogin(account.getUsername(), account.getPassword());
         assertTrue(tokenOptional.isPresent());
         String token = tokenOptional.get();
-        assertTrue(userLoginService.logged(account));
-        assertTrue(userLoginService.logout(account, token));
-        assertFalse(userLoginService.logged(account));
+        assertTrue(userLoginService.logged(account.getId()));
+        assertTrue(userLoginService.logout(account.getId(), token));
+        assertFalse(userLoginService.logged(account.getId()));
 
         assertTrue(registrationService.deregister(account));
         assertFalse(registrationService.accountExisted(account));

@@ -1,7 +1,6 @@
 package com.lwk.wochat.account_service.controller;
 
 import com.lwk.wochat.account_service.service.RegistrationService;
-import com.lwk.wochat.account_service.service.UserLoginService;
 import com.lwk.wochat.account_service.service.VerificationCodeService;
 import com.lwk.wochat.api.pojo.entity.Account;
 import com.lwk.wochat.api.pojo.http.response.Code;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.util.Optional;
 
 /**
@@ -42,7 +40,7 @@ public class RegistrationController {
 
         return new Result<>(
                 existed,
-                Code.GET_SUCCEED);
+                Code.OK);
     }
 
     /**
@@ -55,25 +53,24 @@ public class RegistrationController {
     public synchronized Result<Account> register(@RequestBody Account account, @PathVariable String verificationCode) {
         Result<Boolean> usernameExisted = existsUsername(account.getUsername());
         if (usernameExisted.getData().orElse(false)) {
-            return new Result<>( Code.REGISTER_FAILED, "用户名已存在");
+            return Result.badRequest("用户名已存在");
         }
 
         boolean verified = verificationCodeService.checkVerificationCode(verificationCode, account.getUsername());
         if (verified) {
-            return new Result<>(Code.REGISTER_FAILED, "验证码错误");
+            return Result.badRequest("验证码错误");
         }
 
         Optional<Account> accountOptional = registrationService.tryRegister(account);
         accountOptional.ifPresent(acc -> logger.info("register: account=" + acc));
 
         return accountOptional
-                .map(acc -> new Result<>(
+                .map(acc -> Result.ok(
                         Account
                                 .builder()
                                 .id(acc.getId())
                                 .username(acc.getUsername())
-                                .build(),
-                        Code.REGISTER_SUCCEED))
-                .orElse(new Result<>(Code.REGISTER_FAILED, "注册失败"));
+                                .build()))
+                .orElse(Result.badRequest("注册失败"));
     }
 }

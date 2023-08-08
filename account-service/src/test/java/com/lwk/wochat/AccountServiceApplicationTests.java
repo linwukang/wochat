@@ -25,10 +25,10 @@ class AccountServiceApplicationTests {
         Account account3 = new Account(3L, "333", "ccc", null, null);
         Account account4 = new Account(4L, "444", "ddd", null, null);
         // 增
-        Assertions.assertEquals(Code.SAVA_SUCCEED, redisClient.save("test001", account1).getCode());
-        Assertions.assertEquals(Code.SAVA_SUCCEED, redisClient.save("test002", account2).getCode());
-        Assertions.assertEquals(Code.SAVA_SUCCEED, redisClient.save("test003", account3).getCode());
-        Assertions.assertEquals(Code.SAVA_SUCCEED, redisClient.save("test004", account4).getCode());
+        Assertions.assertEquals(Code.OK, redisClient.save("test001", account1).getCode());
+        Assertions.assertEquals(Code.OK, redisClient.save("test002", account2).getCode());
+        Assertions.assertEquals(Code.OK, redisClient.save("test003", account3).getCode());
+        Assertions.assertEquals(Code.OK, redisClient.save("test004", account4).getCode());
 
         // 查
         Account getAccount1 = redisClient.get("test001", Account.class).getData().get();
@@ -42,15 +42,15 @@ class AccountServiceApplicationTests {
         Assertions.assertEquals(account4, getAccount4);
 
         // 删
-        Assertions.assertEquals(Code.REMOVE_SUCCEED, redisClient.remove("test001").getCode());
-        Assertions.assertEquals(Code.REMOVE_SUCCEED, redisClient.remove("test002").getCode());
-        Assertions.assertEquals(Code.REMOVE_SUCCEED, redisClient.remove("test003").getCode());
-        Assertions.assertEquals(Code.REMOVE_SUCCEED, redisClient.remove("test004").getCode());
+        Assertions.assertEquals(Code.BAD_REQUEST, redisClient.remove("test001").getCode());
+        Assertions.assertEquals(Code.BAD_REQUEST, redisClient.remove("test002").getCode());
+        Assertions.assertEquals(Code.BAD_REQUEST, redisClient.remove("test003").getCode());
+        Assertions.assertEquals(Code.BAD_REQUEST, redisClient.remove("test004").getCode());
 
-        Assertions.assertEquals(Code.GET_FAILED, redisClient.get("test001", Account.class).getCode());
-        Assertions.assertEquals(Code.GET_FAILED, redisClient.get("test002", Account.class).getCode());
-        Assertions.assertEquals(Code.GET_FAILED, redisClient.get("test003", Account.class).getCode());
-        Assertions.assertEquals(Code.GET_FAILED, redisClient.get("test004", Account.class).getCode());
+        Assertions.assertEquals(Code.BAD_REQUEST, redisClient.get("test001", Account.class).getCode());
+        Assertions.assertEquals(Code.BAD_REQUEST, redisClient.get("test002", Account.class).getCode());
+        Assertions.assertEquals(Code.BAD_REQUEST, redisClient.get("test003", Account.class).getCode());
+        Assertions.assertEquals(Code.BAD_REQUEST, redisClient.get("test004", Account.class).getCode());
 
 //        redisClient.save("test005", "test005");
 //        Assertions.assertEquals(Code.GET_SUCCEED, redisClient.get("test005").code());

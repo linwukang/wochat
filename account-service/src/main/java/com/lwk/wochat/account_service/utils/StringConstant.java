@@ -5,5 +5,5 @@ public class StringConstant {
 
     public static final String TokenKeyPrefix = "token:";
 
-    public static final String AccountTokenKeyPrefix = "accountToken:";
+    public static final String UserIdTokenKeyPrefix = "userIdToken:";
 }

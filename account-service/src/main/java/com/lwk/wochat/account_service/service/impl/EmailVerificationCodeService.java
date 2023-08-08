@@ -1,5 +1,7 @@
 package com.lwk.wochat.account_service.service.impl;
 
+import com.lwk.wochat.api.data.redis.RedisMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -10,8 +12,8 @@ import java.time.Duration;
  */
 @Component
 public class EmailVerificationCodeService extends AbstractVerificationCodeService {
-    public EmailVerificationCodeService(RedisTemplate<String, String> redisTemplate) {
-        super(redisTemplate);
+    public EmailVerificationCodeService(@Autowired RedisMap<String, String> stringRedisMap) {
+        super(stringRedisMap);
     }
 
     @Override

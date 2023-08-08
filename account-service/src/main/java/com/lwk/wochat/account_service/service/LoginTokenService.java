@@ -15,33 +15,36 @@ import java.util.Optional;
 public interface LoginTokenService {
     /**
      * 为账号添加 token，表示账号已登录
-     * @param account 登录账号信息
+     * @param username 用户名
+     * @param password 密码
      * @return token
      */
-    String login(Account account);
+    String login(String username, String password);
 
     /**
-     * 通过 token 获取账号信息
+     * 通过 token 获取用户名
      * @param token token
      * @return
      * <ul>
      *      <li>{@code Optional.empty()}: 账号未登录</li>
-     *      <li>{@code Optional.of(account)}: 账号信息</li>
+     *      <li>{@code Optional.of(account)}: 用户名</li>
      * </ul>
      */
-    Optional<String> tryGetAccount(String token);
+    Optional<String> tryGetUsername(String token);
+
+    Optional<Long> tryGetUserId(String token);
 
     /**
      * 通过 account 获取 token，当
      * 该服务不能对外暴露
-     * @param account 用户账号
+     * @param username 用户账号
      * @return
      * <ul>
      *      <li>{@code Optional.empty()}: 账号未登录或 token 失效</li>
      *      <li>{@code Optional.of(token)}: token</li>
      * </ul>
      */
-    Optional<String> tryGetToken(String account);
+    Optional<String> tryGetToken(String username);
 
     /**
      * 使 token 失效

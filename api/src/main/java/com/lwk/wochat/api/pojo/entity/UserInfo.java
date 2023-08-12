@@ -20,19 +20,19 @@ public class UserInfo {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "email")
+    @Column(name = "email", length = 128)
     private String email;
 
-    @Column(name = "phone")
+    @Column(name = "phone", length = 30)
     private String phone;
 
     @Column(name = "birth_date")
     private Date birthDate;
 
-    @Column(name = "gender")
+    @Column(name = "gender", length = 5)
     private String gender;
 
-    @Column(name = "avatar_url")
+    @Column(name = "avatar_url", length = 180)
     private String avatarUrl;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

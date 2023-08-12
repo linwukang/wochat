@@ -1,7 +1,7 @@
 package com.lwk.wochat.api.pojo;
 
 public enum State {
-    hidden,
-    retraction,
-    normal
+    NORMAL,         // 正常的
+    HIDDEN,         // 被隐藏的
+    RETRACTION,     // 被撤回的
 }

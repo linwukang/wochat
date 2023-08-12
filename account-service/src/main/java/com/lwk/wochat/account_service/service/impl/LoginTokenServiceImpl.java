@@ -28,7 +28,7 @@ public class LoginTokenServiceImpl implements LoginTokenService {
     private AccountRepository accountRepository;
 
     public LoginTokenServiceImpl(@Autowired RedisMap<String, String> stringRedisMap) {
-        this.stringRedisMap = stringRedisMap;
+        this.stringRedisMap = stringRedisMap.of("loginToken");
     }
 
     @Override

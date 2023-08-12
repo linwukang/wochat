@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -22,10 +23,10 @@ public class Account {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", length = 18)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", length = 32)
     private String password;
 
     @Column(name = "create_time")
@@ -36,4 +37,7 @@ public class Account {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_info_id")
     private UserInfo userInfo;
+
+    @ManyToMany(mappedBy = "members")
+    private List<ChatGroup> groups;
 }

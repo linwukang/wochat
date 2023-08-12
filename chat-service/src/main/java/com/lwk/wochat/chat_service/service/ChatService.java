@@ -1,7 +1,6 @@
 package com.lwk.wochat.chat_service.service;
 
-import com.lwk.wochat.api.pojo.entity.Account;
-import com.lwk.wochat.api.pojo.entity.ChattingRecord;
+import com.lwk.wochat.api.pojo.entity.UserChattingRecord;
 
 import java.util.Date;
 import java.util.List;
@@ -34,7 +33,7 @@ public interface ChatService {
      * @param endTime 结束时间
      * @return 聊天记录列表
      */
-    List<ChattingRecord> getUserChattingRecords(long userId, long otherId, Date startTime, Date endTime);
+    List<UserChattingRecord> getUserChattingRecords(long userId, long otherId, Date startTime, Date endTime);
 
     /**
      * 获取指定时间范围内，群组的所有聊天记录
@@ -43,6 +42,13 @@ public interface ChatService {
      * @param endTime 结束时间
      * @return 聊天记录列表
      */
-    List<ChattingRecord> getGroupChattingRecords(long groupId, Date startTime, Date endTime);
+    List<UserChattingRecord> getGroupChattingRecords(long groupId, Date startTime, Date endTime);
 
+    /**
+     * 撤回聊天记录
+     * @param operatorId 撤回操作者的用户 id
+     * @param chattingRecordId 聊天记录的 id
+     * @return 撤回成功返回 true，失败返回 false
+     */
+    boolean undoChattingRecord(long operatorId, long chattingRecordId);
 }

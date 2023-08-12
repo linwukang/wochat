@@ -15,7 +15,7 @@ public abstract class AbstractVerificationCodeService implements VerificationCod
     protected final RedisMap<String, String> stringRedisMap;
 
     public AbstractVerificationCodeService(@Autowired RedisMap<String, String> stringRedisMap) {
-        this.stringRedisMap = stringRedisMap;
+        this.stringRedisMap = stringRedisMap.of("verificationCode");
         logger = LoggerFactory.getLogger(this.getClass());
     }
 

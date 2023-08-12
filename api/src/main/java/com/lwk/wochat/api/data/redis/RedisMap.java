@@ -60,6 +60,8 @@ public interface RedisMap<K, V> extends Map<K, V> {
      */
     boolean expire(K key, long ttl);
 
+    RedisMap<K, V> of(K keyPrefix);
+
     RedisListValue<K, V> listOf(K key);
 
     RedisHashValue<K, V> hashOf(K key);

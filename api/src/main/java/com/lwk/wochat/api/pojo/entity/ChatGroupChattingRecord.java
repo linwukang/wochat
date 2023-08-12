@@ -13,9 +13,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "chatting_record")
+@Table(name = "chat_group_chatting_record")
 @EntityListeners(AuditingEntityListener.class)
-public class ChattingRecord {
+public class ChatGroupChattingRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

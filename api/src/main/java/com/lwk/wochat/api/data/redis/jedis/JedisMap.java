@@ -87,6 +87,16 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
                 keyEncoding);
     }
 
+    public K concatKey(K key1, K key2) {
+        byte[] keyBytes1 = keySerializer.serialize(key1);
+        byte[] keyBytes2 = keySerializer.serialize(key2);
+        byte[] result = new byte[keyBytes1.length + keyBytes2.length];
+        System.arraycopy(keyBytes1, 0, result, 0, keyBytes1.length);
+        System.arraycopy(keyBytes2, 0, result, keyBytes1.length, keyBytes2.length);
+
+        return keySerializer.deserialize(result);
+    }
+
     public String valueToString(V value) {
         return new String(
                 valueSerializer().serialize(value),
@@ -178,6 +188,19 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
     public boolean expire(K key, long ttl) {
         long result = jedis.pexpire(fullKey(key), ttl);
         return result == 1;
+    }
+
+    @Override
+    public RedisMap<K, V> of(K keyPrefix) {
+
+        return new JedisMap<>(
+                jedis,
+                separator,
+                concatKey(concatKey(this.keyPrefix, separator), keyPrefix),
+                keySerializer,
+                valueSerializer,
+                keyEncoding,
+                valueEncoding);
     }
 
     @Override

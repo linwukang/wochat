@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class StringUtil {
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final String TOKEN_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     /**
      * 生成随机 token 字符串
@@ -15,7 +15,7 @@ public class StringUtil {
     }
 
     public static String generateVerificationCode(int length) {
-        return generateVerificationCode(length, CHARACTERS);
+        return generateVerificationCode(length, TOKEN_CHARACTERS);
     }
 
     public static String generateVerificationCode(int length, String characters) {

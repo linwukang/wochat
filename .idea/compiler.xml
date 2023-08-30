@@ -29,7 +29,7 @@
       <module name="cache-service" options="-parameters" />
       <module name="chat-service" options="-parameters" />
       <module name="redis-service" options="-parameters" />
-      <module name="wochat-pom" options="-parameters" />
+      <module name="wochat-pom" options="" />
     </option>
   </component>
 </project>

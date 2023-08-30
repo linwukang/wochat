@@ -22,7 +22,7 @@ class UtilsTests {
      */
     @Test
     void testBeanUtil() {
-        Account account1 = new Account(0L, "123", "aaa", new Date(), null);
+        Account account1 = new Account(0L, "123", "aaa", new Date(), null, null);
         Map<String, Object> accountMap1 = new HashMap<>();
         accountMap1.put("id", account1.getId());
         accountMap1.put("account", account1.getUsername());
@@ -32,7 +32,7 @@ class UtilsTests {
         Assert.assertEquals(account1, BeanUtil.mapToBean(accountMap1, Account.class));
 
 
-        Account account2 = new Account(null, "123", "aaa", null, null);
+        Account account2 = new Account(null, "123", "aaa", null, null, null);
         Map<String, Object> accountMap2 = new HashMap<>();
         accountMap2.put("id", account2.getId());
         accountMap2.put("account", account2.getUsername());
@@ -41,7 +41,7 @@ class UtilsTests {
 
         Assert.assertEquals(account2, BeanUtil.mapToBean(accountMap2, Account.class));
 
-        Account account3 = new Account(null, "123", "aaa", null, null);
+        Account account3 = new Account(null, "123", "aaa", null, null, null);
         Map<String, Object> accountMap3 = new HashMap<>();
         accountMap3.put("id", account3.getId());
         accountMap3.put("account", account3.getUsername());
@@ -53,12 +53,12 @@ class UtilsTests {
 
         Assert.assertEquals(account3, BeanUtil.mapToBean(accountMap3, Account.class));
 
-        Account account4 = new Account(5L, "123", "aaa", new Date(), null);
+        Account account4 = new Account(5L, "123", "aaa", new Date(), null, null);
         Map<String, Object> accountMap4 = new HashMap<>();
         accountMap4.put("id", account4.getId());
 
         Assert.assertEquals(
-                new Account(5L, null, null, null, null),
+                new Account(5L, null, null, null, null, null),
                 BeanUtil.mapToBean(accountMap4, Account.class));
 
         String s = "test BeanMap.mapToBean";

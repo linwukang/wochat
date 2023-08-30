@@ -27,6 +27,9 @@ public class UserChattingRecord {
     @Column(name = "receiver_id")
     private long receiverId;
 
+    @Column(name = "message")
+    private String message;
+
     @Column(name = "send_time")
     private Date sendTime;
 

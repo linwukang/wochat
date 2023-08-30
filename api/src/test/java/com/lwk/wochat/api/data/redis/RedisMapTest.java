@@ -1,44 +1,63 @@
 package com.lwk.wochat.api.data.redis;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lwk.wochat.api.ApiApplication;
-import com.lwk.wochat.api.configuration.RedisConfiguration;
-import com.lwk.wochat.api.data._redis.RedisMap;
-import com.lwk.wochat.api.data._redis.RedisTemplateMap;
-import com.lwk.wochat.api.data._redis.value.impl.RedisHashValueImpl;
+import com.lwk.wochat.api.data.redis.jedis.JedisMap;
+import com.lwk.wochat.api.data.redis.value.RedisHashValue;
+import com.lwk.wochat.api.data.serialization.Serializer;
+import com.lwk.wochat.api.data.serialization.serializer.StringSerializer;
 import com.lwk.wochat.api.pojo.entity.Account;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import redis.clients.jedis.Jedis;
 
-import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = ApiApplication.class)
 class RedisMapTest {
-    @Resource
-    RedisConfiguration.RedisTemplateFactory<Account> redisTemplateFactory;
-
-    @Resource
-    RedisConfiguration.RedisTemplateFactory<String> redisTemplateStringFactory;
-
-    RedisTemplate<String, Account> redisTemplate;
-    RedisTemplateMap<String, Account> redisMap;
-    RedisMap<String, String> redisMapString;
-    RedisHashValueImpl<String, Account> redisHashValueMap;
+    RedisMap<String, Account> redisMap;
+    RedisHashValue<String, Account> redisHashValueMap;
     @Autowired
     RedisTemplate<String, String> redisTemplateString;
 
     @BeforeEach
-    public void setUp() {
-        redisTemplate = redisTemplateFactory.create(Account.class);
-        redisMap = new RedisTemplateMap<>(redisTemplate, "RedisMapTest:");
-        redisHashValueMap = new RedisHashValueImpl<>("RedisHashValueMapTest", redisTemplate.opsForHash());
+    public void init() {
+        Jedis jedis = new Jedis("localhost", 6379);
 
-        redisMapString = new RedisTemplateMap<>(redisTemplateString, "testPair:");
+        redisMap = new JedisMap<>(
+                jedis,
+                ":",
+                "RedisMapTest",
+                new StringSerializer(),
+                new Serializer<>() {
+                    @Override
+                    public byte[] serialize(Account object) {
+                        ObjectMapper mapper = new ObjectMapper();
+                        try {
+                            return mapper.writeValueAsString(object).getBytes();
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                    @Override
+                    public Account deserialize(byte[] serialized) {
+                        ObjectMapper mapper = new ObjectMapper();
+                        try {
+                            return mapper.readValue(serialized, Account.class);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+        redisHashValueMap = redisMap.hashWith("hashTest");
     }
 
     @Test
@@ -73,21 +92,21 @@ class RedisMapTest {
 
     }
 
-    @Test
-    public void testPair() {
-        redisMapString.putPair("test001", "test002");
-        assertEquals("test002", redisMapString.getOther("test001"));
-        assertEquals("test001", redisMapString.getOther("test002"));
-        assertEquals("test002", redisMapString.removePair("test001"));
-
-        redisMapString.putPair("test001", "test002");
-        assertEquals("test002", redisMapString.getOther("test001"));
-        assertEquals("test001", redisMapString.getOther("test002"));
-        assertEquals("test001", redisMapString.removePair("test002"));
-
-        redisMapString.putPair("test003", "test003");
-        assertEquals("test003", redisMapString.getOther("test003"));
-        assertEquals("test003", redisMapString.removePair("test003"));
-    }
+//    @Test
+//    public void testPair() {
+//        redisMapString.putPair("test001", "test002");
+//        assertEquals("test002", redisMapString.getOther("test001"));
+//        assertEquals("test001", redisMapString.getOther("test002"));
+//        assertEquals("test002", redisMapString.removePair("test001"));
+//
+//        redisMapString.putPair("test001", "test002");
+//        assertEquals("test002", redisMapString.getOther("test001"));
+//        assertEquals("test001", redisMapString.getOther("test002"));
+//        assertEquals("test001", redisMapString.removePair("test002"));
+//
+//        redisMapString.putPair("test003", "test003");
+//        assertEquals("test003", redisMapString.getOther("test003"));
+//        assertEquals("test003", redisMapString.removePair("test003"));
+//    }
 
 }

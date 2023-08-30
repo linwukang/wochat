@@ -1,18 +1,14 @@
 package com.lwk.wochat.api.data.redis.jedis;
 
 import com.lwk.wochat.api.data.redis.RedisMap;
+import com.lwk.wochat.api.data.redis.jedis.nest.NestedJedisMap;
 import com.lwk.wochat.api.data.redis.jedis.utils.LuaScripts;
-import com.lwk.wochat.api.data.redis.jedis.value.JedisHashValue;
-import com.lwk.wochat.api.data.redis.jedis.value.JedisListValue;
-import com.lwk.wochat.api.data.redis.jedis.value.JedisSetValue;
-import com.lwk.wochat.api.data.redis.jedis.value.JedisSortedSetValue;
-import com.lwk.wochat.api.data.redis.value.RedisHashValue;
-import com.lwk.wochat.api.data.redis.value.RedisListValue;
-import com.lwk.wochat.api.data.redis.value.RedisSetValue;
-import com.lwk.wochat.api.data.redis.value.RedisSortedSetValue;
+import com.lwk.wochat.api.data.redis.jedis.value.*;
+import com.lwk.wochat.api.data.redis.value.*;
 import com.lwk.wochat.api.data.serialization.Serializer;
 import redis.clients.jedis.Jedis;
 
+import javax.annotation.Nullable;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -22,13 +18,13 @@ import java.util.stream.Collectors;
 
 public class JedisMap<K, V> implements RedisMap<K, V> {
     private final Jedis jedis;
-    private final K separator;
-    private final K keyPrefix;
+    private final String separator;
+    private final String keyPrefix;
 
 //    private final byte[] separatorBytes;
-    private final String separatorString;
+//    private final String separatorString;
     //    private final byte[] keyPrefixBytes;
-    private final String keyPrefixString;
+//    private final String keyPrefixString;
 
     private final Serializer<K> keySerializer;
     private final Serializer<V> valueSerializer;
@@ -36,13 +32,13 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
     public final Charset keyEncoding;
     public final Charset valueEncoding;
 
-    private final String prefix;
+//    private final String prefix;
 
 
     public JedisMap(
             Jedis jedis,
-            K separator,
-            K keyPrefix,
+            String separator,
+            String keyPrefix,
             Serializer<K> keySerializer,
             Serializer<V> valueSerializer,
             Charset keyEncoding,
@@ -51,21 +47,22 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
         this.separator = separator;
         this.keyPrefix = keyPrefix;
 //        this.separatorBytes = keySerializer.serialize(separator);
-        this.separatorString = new String(keySerializer.serialize(separator), keyEncoding);
+//        this.separatorString = new String(keySerializer.serialize(separator), keyEncoding);
 //        this.keyPrefixBytes = keySerializer.serialize(keyPrefix);
-        this.keyPrefixString = new String(keySerializer.serialize(keyPrefix), keyEncoding);
+//        this.keyPrefixString = new String(keySerializer.serialize(keyPrefix), keyEncoding);
         this.keySerializer = keySerializer;
         this.valueSerializer = valueSerializer;
         this.keyEncoding = keyEncoding;
         this.valueEncoding = valueEncoding;
 
-        prefix = keyPrefixString + separatorString;
+//        prefix = keyPrefixString + separatorString;
+//        prefix = keyPrefix + separator;
     }
 
     public JedisMap(
             Jedis jedis,
-            K separator,
-            K keyPrefix,
+            String separator,
+            String keyPrefix,
             Serializer<K> keySerializer,
             Serializer<V> valueSerializer,
             Charset encoding) {
@@ -74,8 +71,8 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
 
     public JedisMap(
             Jedis jedis,
-            K separator,
-            K keyPrefix,
+            String separator,
+            String keyPrefix,
             Serializer<K> keySerializer,
             Serializer<V> valueSerializer) {
         this(jedis, separator, keyPrefix, keySerializer, valueSerializer, StandardCharsets.UTF_8);
@@ -103,6 +100,7 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
                 valueEncoding);
     }
 
+    @Nullable
     public K stringToKey(String keyString) {
         if (keyString == null || keyString.isEmpty()) {
             return null;
@@ -111,6 +109,7 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
         return keySerializer.deserialize(keyString.getBytes(keyEncoding));
     }
 
+    @Nullable
     public V stringToValue(String valueString) {
         if (valueString == null || valueString.isEmpty()) {
             return null;
@@ -120,32 +119,36 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
     }
 
     public String fullKey(K key) {
-        return prefix +
+        return getKeyPrefix() + getSeparator() +
                 new String(keySerializer().serialize(key), keyEncoding);
     }
 
-    public String rawKey(K fullKey) {
+    public K rawKey(String fullKey) {
         if (fullKey == null) {
             throw new NullPointerException();
         }
 
-        byte[] keyBytes = keySerializer().serialize(fullKey);
-        int prefixLength = keyPrefixString.getBytes(keyEncoding).length
-                + separatorString.getBytes(keyEncoding).length;
+        int prefixLength = (getKeyPrefix() + getSeparator()).getBytes(keyEncoding).length;
+        byte[] keyBytes = fullKey.getBytes(keyEncoding);
+
+        if (prefixLength == 0) {
+            return keySerializer.deserialize(keyBytes);
+        }
 
         if (keyBytes.length < prefixLength) {
             throw new IllegalArgumentException();
         }
 
-        if (prefixLength == 0) {
-            return new String(keyBytes, keyEncoding);
-        }
 
-        return new String(
-                keyBytes,
-                prefixLength,
-                keyBytes.length - prefixLength,
-                keyEncoding);
+
+        return keySerializer
+                .deserialize(
+                        new String(
+                                keyBytes,
+                                prefixLength,
+                                keyBytes.length - prefixLength,
+                                keyEncoding)
+                                .getBytes(keyEncoding));
     }
 
     public Jedis jedis() {
@@ -153,12 +156,12 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
     }
 
     @Override
-    public K getSeparator() {
+    public String getSeparator() {
         return separator;
     }
 
     @Override
-    public K getKeyPrefix() {
+    public String getKeyPrefix() {
         return keyPrefix;
     }
 
@@ -191,39 +194,36 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
     }
 
     @Override
-    public RedisMap<K, V> of(K keyPrefix) {
-
-        return new JedisMap<>(
-                jedis,
-                separator,
-                concatKey(concatKey(this.keyPrefix, separator), keyPrefix),
-                keySerializer,
-                valueSerializer,
-                keyEncoding,
-                valueEncoding);
+    public RedisMap<K, V> with(String keyPrefix) {
+        return new NestedJedisMap<>(this, keyPrefix);
     }
 
     @Override
-    public RedisListValue<K, V> listOf(K key) {
+    public RedisListValue<K, V> listWith(K key) {
         return new JedisListValue<>(this, key);
     }
 
     @Override
-    public RedisHashValue<K, V> hashOf(K key) {
+    public RedisHashValue<K, V> hashWith(K key) {
         return new JedisHashValue<>(this, key);
     }
 
     @Override
-    public RedisSetValue<K, V> setOf(K key) {
+    public RedisSetValue<K, V> setWith(K key) {
         return new JedisSetValue<>(this, key);
     }
 
     @Override
-    public RedisSortedSetValue<K, V> sortedSetOf(K key, Function<? super V, Double> scorer) {
+    public RedisSortedSetValue<K, V> sortedSetWith(K key, Function<? super V, Double> scorer) {
         return new JedisSortedSetValue<>(this, key, scorer);
     }
 
-//    @Override
+    @Override
+    public RedisCounterValue<K, V> counterWith(K key) {
+        return new JedisCounterValue<>(this, key);
+    }
+
+    //    @Override
 //    public Pairs<K, V> pairsOf(K key) {
 //        return null;
 //    }
@@ -231,7 +231,7 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
     @Override
     public int size() {
         return jedis
-                .keys(prefix + "*")
+                .keys(getKeyPrefix() + getSeparator() + "*")
                 .size();
     }
 
@@ -260,6 +260,7 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
                 .anyMatch(v -> Objects.equals(v, value));
     }
 
+    @Nullable
     @Override
     public V get(Object key) {
         try {
@@ -322,30 +323,32 @@ public class JedisMap<K, V> implements RedisMap<K, V> {
 
     @Override
     public void clear() {
-        jedis.eval(LuaScripts.REDIS_CLEAR, 0, prefix);
+        jedis.eval(LuaScripts.REDIS_CLEAR, 0, getKeyPrefix() + getSeparator());
     }
 
     @Override
     public Set<K> keySet() {
         return jedis
-                .keys(prefix + "*")
+                .keys(getKeyPrefix() + getSeparator() + "*")
                 .stream()
-                .map(this::stringToKey)
                 .map(this::rawKey)
-                .map(this::stringToKey)
                 .collect(Collectors.toSet());
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Collection<V> values() {
-        return new HashSet<>(((List<V>) jedis.eval(LuaScripts.REDIS_VALUES, 0, prefix)));
+        List<String> valueStringList = (List<String>) jedis.eval(LuaScripts.REDIS_VALUES, 0, getKeyPrefix() + getSeparator());
+        return valueStringList
+                .stream()
+                .map(this::stringToValue)
+                .collect(Collectors.toSet());
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
         return jedis
-                .keys(prefix + "*")
+                .keys(getKeyPrefix() + getSeparator() + "*")
                 .stream()
                 .map(k -> new Entry<K, V>() {
                     private final K key = stringToKey(k);

@@ -31,7 +31,7 @@ public class JedisHashValue<K, V> implements RedisHashValue<K, V> {
 
     @Override
     public boolean isEmpty() {
-        return redisMap.get(key) == null
+        return !redisMap.containsKey(key)
                 || size() == 0;
     }
 

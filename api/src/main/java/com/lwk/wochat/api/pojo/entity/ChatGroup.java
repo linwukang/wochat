@@ -41,7 +41,7 @@ public class ChatGroup {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "chat_group_members",
-            joinColumns = @JoinColumn(name = "group_id"),
-            inverseJoinColumns = @JoinColumn(name = "member_id"))
+            joinColumns = @JoinColumn(name = "chat_group_id"),
+            inverseJoinColumns = @JoinColumn(name = "member_user_id"))
     private List<Account> members;
 }

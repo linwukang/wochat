@@ -58,6 +58,7 @@ public class LoginController {
     public Result<Boolean> logged(@PathVariable long id) {
         boolean logged = userLoginService.logged(id);
 
-        return new Result<>(logged, Code.OK);
+//        return new Result<>(logged, Code.OK);
+        return Result.ok(logged);
     }
 }

@@ -1,9 +1,6 @@
 package com.lwk.wochat.api.data.redis;
 
-import com.lwk.wochat.api.data.redis.value.RedisHashValue;
-import com.lwk.wochat.api.data.redis.value.RedisListValue;
-import com.lwk.wochat.api.data.redis.value.RedisSetValue;
-import com.lwk.wochat.api.data.redis.value.RedisSortedSetValue;
+import com.lwk.wochat.api.data.redis.value.*;
 import com.lwk.wochat.api.data.serialization.Serializer;
 
 import java.time.Duration;
@@ -13,15 +10,17 @@ import java.util.function.Function;
 public interface RedisMap<K, V> extends Map<K, V> {
     /**
      * 获取 key 分隔符
+     *
      * @return key 的分隔符
      */
-    K getSeparator();
+    String getSeparator();
 
     /**
      * 获取 key 前缀
+     *
      * @return key 的前缀
      */
-    K getKeyPrefix();
+    String getKeyPrefix();
 
     /**
      * 获取 key 的序列化器
@@ -60,15 +59,17 @@ public interface RedisMap<K, V> extends Map<K, V> {
      */
     boolean expire(K key, long ttl);
 
-    RedisMap<K, V> of(K keyPrefix);
+    RedisMap<K, V> with(String keyPrefix);
 
-    RedisListValue<K, V> listOf(K key);
+    RedisListValue<K, V> listWith(K key);
 
-    RedisHashValue<K, V> hashOf(K key);
+    RedisHashValue<K, V> hashWith(K key);
 
-    RedisSetValue<K, V> setOf(K key);
+    RedisSetValue<K, V> setWith(K key);
 
-    RedisSortedSetValue<K, V> sortedSetOf(K key, Function<? super V, Double> scorer);
+    RedisSortedSetValue<K, V> sortedSetWith(K key, Function<? super V, Double> scorer);
+
+    RedisCounterValue<K, V> counterWith(K key);
 
 //    Pairs<K, V> pairsOf(K key);
 }

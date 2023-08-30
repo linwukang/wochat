@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,7 +27,7 @@ public class LoginTokenServiceImpl implements LoginTokenService {
     private AccountRepository accountRepository;
 
     public LoginTokenServiceImpl(@Autowired RedisMap<String, String> stringRedisMap) {
-        this.stringRedisMap = stringRedisMap.of("loginToken");
+        this.stringRedisMap = stringRedisMap.with("loginToken");
     }
 
     @Override

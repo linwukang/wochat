@@ -15,7 +15,8 @@ spring:
     database: 0
     host: localhost
     port: 6379
-    password:
+    username: ''
+    password: ''
     jedis:
       pool:
         enabled: true

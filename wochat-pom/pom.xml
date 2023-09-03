@@ -29,7 +29,7 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-<!--        <spring-boot.version>2.6.13</spring-boot.version>-->
+        <spring-boot.version>2.6.13</spring-boot.version>
         <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
         <spring-boot-dependencies.version>2.6.13</spring-boot-dependencies.version>
         <mybatis.version>3.5.13</mybatis.version>
@@ -62,13 +62,18 @@
         <persistence-api.version>1.0.2</persistence-api.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <jackson.version>2.15.1</jackson.version>
+        <redisson.version>3.23.1</redisson.version>
     </properties>
     <dependencies>
-
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
             <!-- Spring Boot 依赖-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>

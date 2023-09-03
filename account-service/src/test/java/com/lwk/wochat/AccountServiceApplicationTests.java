@@ -1,6 +1,6 @@
 package com.lwk.wochat;
 
-import com.lwk.wochat.account_service.AccountServiceApplication;
+import com.lwk.wochat.account.AccountServiceApplication;
 import com.lwk.wochat.api.clients.RedisClient;
 import com.lwk.wochat.api.pojo.entity.Account;
 import com.lwk.wochat.api.pojo.http.response.Code;

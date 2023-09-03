@@ -23,6 +23,10 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.lwk.wochat</groupId>
             <artifactId>api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
@@ -145,7 +149,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot-dependencies.version}</version>
                 <configuration>
-                    <mainClass>com.lwk.wochat.chat_service.ChatServiceApplication</mainClass>
+                    <mainClass>com.lwk.wochat.chat.ChatServiceApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>
